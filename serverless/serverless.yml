@@ -1,0 +1,21 @@
+service: serverless-app
+app: myapp
+org: brgmnadam
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 1024
+  region: us-east-1
+  environment:
+    CLIENT_ID: ${ssm:/login/clientId~true}
+    CLIENT_SECRET: ${ssm:/login/clientSecret~true}
+
+functions:
+  login:
+    handler: handler.login
+    events:
+      - http:
+          path: /login
+          method: get
+          cors: true
