@@ -22,10 +22,11 @@ module.exports.login = async event => {
     statusCode: 302,
     headers: {
       Location: `http://localhost:3000/?access_token=${token}`,
-      Authorization: token
-      // 'Access-Control-Allow-Origin': '*',
-      // 'Access-Control-Allow-Credentials': true
+      'Access-Control-Allow-Credentials': true,
+      'Access-Control-Allow-Origin': '*'
+      // 'Set-Cookie': 'mycookiee=test; domain=localhost; expires=Thu, 19 Apr 2020 20:41:27 GMT;"'
     }
+    // statusCode: 200,
     // body: JSON.stringify(token)
   }
 }

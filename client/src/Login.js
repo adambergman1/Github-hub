@@ -1,29 +1,16 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import queryString from 'query-string'
-
 const clientId = '9e33cf9f01b5b67cb4d6'
 
-function Login (props) {
+function Login ({ history, setToken }) {
   useEffect(() => {
-    // const token = queryString.parse(window.location.search).access_token
-
-    // if (token) {
-    //   props.history.push('/')
-    //   fetchUser()
-    // }
-
-    // async function fetchUser () {
-    //   return window.fetch('https://api.github.com/user', {
-    //     headers: { Authorization: 'token ' + token }
-    //   })
-    //     .then(response => {
-    //       if (response.ok) return response.json()
-    //     })
-    //     .then(response => {
-    //       console.log(response)
-    //     })
-    // }
+    const userToken = queryString.parse(window.location.search).access_token
+    if (userToken) {
+      setToken(userToken)
+      history.push('/')
+    }
   }, [])
+
   return (
     <div className='login'>
       <div className=''>
