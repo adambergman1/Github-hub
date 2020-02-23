@@ -1,8 +1,12 @@
-// const axios = require('axios')
+const Responses = require('./common/API_Responses')
 
-module.exports.login = async event => {
+exports.handler = async event => {
   const superagent = require('superagent')
   const { code } = event.queryStringParameters
+
+  if (!code) {
+    return Responses._400({ message: 'Code is missing' })
+  }
 
   const data = {
     client_id: process.env.CLIENT_ID,
@@ -16,17 +20,14 @@ module.exports.login = async event => {
     .set('Accept', 'application/json')
     .set('Content-Type', 'application/json')
 
-  const token = response.body.access_token
+  const { access_token: token } = response.body
 
   return {
     statusCode: 302,
     headers: {
-      Location: `http://localhost:3000/?access_token=${token}`,
+      Location: `${process.env.CLIENT_URL}/?access_token=${token}`,
       'Access-Control-Allow-Credentials': true,
       'Access-Control-Allow-Origin': '*'
-      // 'Set-Cookie': 'mycookiee=test; domain=localhost; expires=Thu, 19 Apr 2020 20:41:27 GMT;"'
     }
-    // statusCode: 200,
-    // body: JSON.stringify(token)
   }
 }

@@ -1,40 +1,39 @@
-import React, { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import './App.css'
+import React from 'react'
+// import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import Login from './Login'
 import Dashboard from './Dashboard'
+import Header from './Header'
+import AuthContextProvider from './context/AuthContext'
+
+import { Container } from '@material-ui/core'
 
 function App () {
-  const [token, setToken] = useState(false)
-  console.log(token)
+  // const { token } = useContext(AuthContext)
   return (
     <div className='App'>
-      <Router>
-        <Switch>
-          {
-            !token ? <Route path='/' render={props => <Login setToken={setToken} {...props} />} />
-              : (
-                <Route path='/' render={props => <Dashboard token={token} {...props} />} />
+      <Container style={{ textAlign: 'center' }}>
+        <AuthContextProvider>
+          <Header />
+          <Login />
+          <Dashboard />
+
+          {/* <BrowserRouter>
+          <Switch>
+            {
+              !token ? (
+                <Route exact path='/' component={Login} />
               )
-          }
-        </Switch>
-      </Router>
+                : (
+                  <Route exact path='/' component={Dashboard} />
+                )
+            }
+          </Switch>
+        </BrowserRouter> */}
+        </AuthContextProvider>
+      </Container>
     </div>
   )
 }
 
 export default App
-
-// const propsToComponent = (Component, props) => routeProps => <Component {...props} {...routeProps} />
-
-//       <Router>
-//         <Switch>
-//           {
-//             !token ? <Route path='/' render={propsToComponent(Login, { setToken })} />
-//               : (
-//                 <Route path='/' render={propsToComponent(Dashboard, { token })} />
-//               )
-//           }
-//         </Switch>
-//       </Router>

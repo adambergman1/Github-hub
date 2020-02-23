@@ -11,3 +11,39 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+svg.github-icon {
+  font-size: 100px;
+}
+
+.login-area-box {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 30px 60px;
+}
+
+.flex {
+  display: flex;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.repositories-header {
+  padding: 10px;
+  background: #f9f9f9;
+}
+
+.organization-details .MuiListItemText-secondary {
+  max-width: 500px;
+}
+
+.organization-details li {
+  border-bottom: 1px solid #eee;
+}
+
+.organization-details ul {
+  overflow: auto;
+  max-height: 400px;
+}

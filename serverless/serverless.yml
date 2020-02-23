@@ -10,12 +10,40 @@ provider:
   environment:
     CLIENT_ID: ${ssm:/login/clientId~true}
     CLIENT_SECRET: ${ssm:/login/clientSecret~true}
+    TABLE_NAME: ${self:custom.tableName}
+    # CLIENT_URL: https://github-app.adambergman.me
+    CLIENT_URL: http://localhost:3000
+    SERVER_URL: https://sls-github.adambergman.me
 
+plugins:
+  - serverless-finch
+  - serverless-domain-manager
+
+custom:
+  tableName: WebSocketUsers
+  client:
+    bucketName: github-app.adambergman.me
+    distributionFolder: ../client/build
+    indexDocument: index.html
+    errorDocument: index.html
+  customDomain:
+    domainName: sls-github.adambergman.me
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+    
 functions:
-  login:
-    handler: handler.login
+  oauthCallback:
+    handler: lambdas/oauthCallback.handler
     events:
       - http:
-          path: /login
+          path: /oauth/callback
+          method: get
+          cors: true
+  index:
+    handler: lambdas/index.handler
+    events:
+      - http:
+          path: /
           method: get
           cors: true
