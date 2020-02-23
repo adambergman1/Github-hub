@@ -1,36 +1,27 @@
 import React from 'react'
-// import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import Login from './Login'
 import Dashboard from './Dashboard'
 import Header from './Header'
+import Footer from './Footer'
+
 import AuthContextProvider from './context/AuthContext'
+import UserContextProvider from './context/UserContext'
 
 import { Container } from '@material-ui/core'
 
 function App () {
-  // const { token } = useContext(AuthContext)
   return (
     <div className='App'>
-      <Container style={{ textAlign: 'center' }}>
+      <Container>
         <AuthContextProvider>
-          <Header />
+          <UserContextProvider>
+            <Header />
+            <Dashboard />
+          </UserContextProvider>
           <Login />
-          <Dashboard />
-
-          {/* <BrowserRouter>
-          <Switch>
-            {
-              !token ? (
-                <Route exact path='/' component={Login} />
-              )
-                : (
-                  <Route exact path='/' component={Dashboard} />
-                )
-            }
-          </Switch>
-        </BrowserRouter> */}
         </AuthContextProvider>
+        <Footer />
       </Container>
     </div>
   )

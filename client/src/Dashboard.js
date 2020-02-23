@@ -1,20 +1,21 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { AuthContext } from './context/AuthContext'
+import { UserContext } from './context/UserContext'
+
 import OrgSelector from './OrgSelector'
 import Notifications from './Notifications'
 import Repositories from './Repositories'
 import OrganizationSubscriptionSettings from './OrganizationSubscriptionSettings'
 
-import { CircularProgress, Grid, Paper } from '@material-ui/core'
+import { CircularProgress, Grid } from '@material-ui/core'
 
 function Dashboard () {
-  const [isLoading, setLoading] = useState(false)
+  const { token } = useContext(AuthContext)
+  const { user, setUser } = useContext(UserContext)
 
-  const [user, setUser] = useState()
+  const [isLoading, setLoading] = useState(false)
   const [orgs, setOrgs] = useState()
   const [repos, setRepos] = useState()
-
-  const { token } = useContext(AuthContext)
 
   useEffect(() => {
     fetchData(token, 'user', setUser)
@@ -57,11 +58,10 @@ function Dashboard () {
   }
 
   return (
-    token ? (
+    token && (
       <div className='dashboard'>
         {isLoading &&
           <div className='loading'>
-            <p>Loading...</p>
             <CircularProgress />
           </div>}
         {user && <p>Welcome {user.name}</p>}
@@ -80,21 +80,13 @@ function Dashboard () {
               <OrganizationSubscriptionSettings />
             </Grid>
             <Grid item md={8} xs={12}>
-              <Paper>
-                {repos && <Repositories repos={repos} />}
-              </Paper>
+              {repos && <Repositories repos={repos} />}
             </Grid>
             <Grid item md={4} xs={12}>
-              <Paper>
-                <Notifications />
-              </Paper>
+              <Notifications />
             </Grid>
           </Grid>
         </div>
-      </div>
-    ) : (
-      <div>
-        Not logged in
       </div>
     )
   )

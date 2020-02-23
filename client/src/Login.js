@@ -1,9 +1,10 @@
 import React, { useEffect, useContext } from 'react'
 import queryString from 'query-string'
+import { Grid, Button, Paper, Typography } from '@material-ui/core'
+import GitHubIcon from '@material-ui/icons/GitHub'
+
 import { AuthContext } from './context/AuthContext'
 
-import { Button, Paper, Typography } from '@material-ui/core'
-import GitHubIcon from '@material-ui/icons/GitHub'
 const clientId = '9e33cf9f01b5b67cb4d6'
 
 const Login = () => {
@@ -19,7 +20,7 @@ const Login = () => {
 
   return (
     !token && (
-      <Paper className='login-area-box'>
+      <Paper className='login-area'>
         <h1>GitHub-Hub</h1>
         <Typography style={{ marginBottom: '1em' }}>For a better overview of your many repositories spread out along different organizations on Github</Typography>
         <div className=''>
@@ -33,7 +34,6 @@ const Login = () => {
         >
           Login
         </Button>
-
       </Paper>
     )
   )

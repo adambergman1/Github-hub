@@ -1,21 +1,52 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Paper, List, ListSubheader, ListItem, ListItemSecondaryAction, ListItemText, Switch } from '@material-ui/core'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 
 const OrganizationSubscriptionSettings = () => {
+  const [fullHeight, setFullHeight] = useState(false)
+  const [subscribed, setSubscribed] = useState([])
+
+  const changeHeight = () => {
+    setFullHeight(!fullHeight)
+  }
+
+  const handleToggle = value => () => {
+    const currentIndex = subscribed.indexOf(value)
+    const newChecked = [...subscribed]
+
+    if (currentIndex === -1) {
+      newChecked.push(value)
+    } else {
+      newChecked.splice(currentIndex, 1)
+    }
+
+    setSubscribed(newChecked)
+  }
+
   return (
-    <Paper>
-      <div className='organization-details'>
-        <List dense='true' subheader={<ListSubheader style={{ background: '#eee' }}>Select your prefered notification settings</ListSubheader>}>
+    <div className='organization-details'>
+      <Paper>
+        <List
+          className={!fullHeight ? 'small-height' : ''} dense subheader={
+            <ListSubheader className='flex align-center space-between' style={{ background: '#eee' }}>
+              Select your prefered notification settings
+              {!fullHeight
+                ? <ExpandMoreIcon className='toggle-button' onClick={changeHeight} />
+                : <ExpandLessIcon className='toggle-button' onClick={changeHeight} />}
+            </ListSubheader>
+          }
+        >
 
           <ListItem key='issues'>
             <ListItemText id='switch-list-label-notifications' primary='Issues' secondary='Triggered when an issue is opened, edited, deleted, pinned, unpinned, closed, reopened, assigned, unassigned, labeled, unlabeled, locked, unlocked, transferred, milestoned, or demilestoned.' />
             <ListItemSecondaryAction>
               <Switch
                 edge='end'
-                // onChange={handleToggle(repo.id)}
-                // checked={subscribed.indexOf(repo.id) !== -1}
-                // inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
+                onChange={handleToggle('org-details')}
+                checked={subscribed.indexOf('org-details') !== -1}
+                inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
               />
             </ListItemSecondaryAction>
           </ListItem>
@@ -25,9 +56,9 @@ const OrganizationSubscriptionSettings = () => {
             <ListItemSecondaryAction>
               <Switch
                 edge='end'
-                // onChange={handleToggle(repo.id)}
-                // checked={subscribed.indexOf(repo.id) !== -1}
-                // inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
+                onChange={handleToggle('membership')}
+                checked={subscribed.indexOf('membership') !== -1}
+                inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
               />
             </ListItemSecondaryAction>
           </ListItem>
@@ -37,9 +68,9 @@ const OrganizationSubscriptionSettings = () => {
             <ListItemSecondaryAction>
               <Switch
                 edge='end'
-                // onChange={handleToggle(repo.id)}
-                // checked={subscribed.indexOf(repo.id) !== -1}
-                // inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
+                onChange={handleToggle('organization')}
+                checked={subscribed.indexOf('organization') !== -1}
+                inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
               />
             </ListItemSecondaryAction>
           </ListItem>
@@ -49,9 +80,9 @@ const OrganizationSubscriptionSettings = () => {
             <ListItemSecondaryAction>
               <Switch
                 edge='end'
-                // onChange={handleToggle(repo.id)}
-                // checked={subscribed.indexOf(repo.id) !== -1}
-                // inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
+                onChange={handleToggle('public')}
+                checked={subscribed.indexOf('public') !== -1}
+                inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
               />
             </ListItemSecondaryAction>
           </ListItem>
@@ -61,9 +92,9 @@ const OrganizationSubscriptionSettings = () => {
             <ListItemSecondaryAction>
               <Switch
                 edge='end'
-                // onChange={handleToggle(repo.id)}
-                // checked={subscribed.indexOf(repo.id) !== -1}
-                // inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
+                onChange={handleToggle('pull-request')}
+                checked={subscribed.indexOf('pull-request') !== -1}
+                inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
               />
             </ListItemSecondaryAction>
           </ListItem>
@@ -73,9 +104,9 @@ const OrganizationSubscriptionSettings = () => {
             <ListItemSecondaryAction>
               <Switch
                 edge='end'
-                // onChange={handleToggle(repo.id)}
-                // checked={subscribed.indexOf(repo.id) !== -1}
-                // inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
+                onChange={handleToggle('pull-request-review')}
+                checked={subscribed.indexOf('pull-request-review') !== -1}
+                inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
               />
             </ListItemSecondaryAction>
           </ListItem>
@@ -85,9 +116,9 @@ const OrganizationSubscriptionSettings = () => {
             <ListItemSecondaryAction>
               <Switch
                 edge='end'
-                // onChange={handleToggle(repo.id)}
-                // checked={subscribed.indexOf(repo.id) !== -1}
-                // inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
+                onChange={handleToggle('push')}
+                checked={subscribed.indexOf('push') !== -1}
+                inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
               />
             </ListItemSecondaryAction>
           </ListItem>
@@ -97,9 +128,9 @@ const OrganizationSubscriptionSettings = () => {
             <ListItemSecondaryAction>
               <Switch
                 edge='end'
-                // onChange={handleToggle(repo.id)}
-                // checked={subscribed.indexOf(repo.id) !== -1}
-                // inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
+                onChange={handleToggle('release')}
+                checked={subscribed.indexOf('release') !== -1}
+                inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
               />
             </ListItemSecondaryAction>
           </ListItem>
@@ -109,9 +140,9 @@ const OrganizationSubscriptionSettings = () => {
             <ListItemSecondaryAction>
               <Switch
                 edge='end'
-                // onChange={handleToggle(repo.id)}
-                // checked={subscribed.indexOf(repo.id) !== -1}
-                // inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
+                onChange={handleToggle('repository')}
+                checked={subscribed.indexOf('repository') !== -1}
+                inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
               />
             </ListItemSecondaryAction>
           </ListItem>
@@ -121,16 +152,15 @@ const OrganizationSubscriptionSettings = () => {
             <ListItemSecondaryAction>
               <Switch
                 edge='end'
-                // onChange={handleToggle(repo.id)}
-                // checked={subscribed.indexOf(repo.id) !== -1}
-                // inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
+                onChange={handleToggle('team')}
+                checked={subscribed.indexOf('team') !== -1}
+                inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
               />
             </ListItemSecondaryAction>
           </ListItem>
-
         </List>
-      </div>
-    </Paper>
+      </Paper>
+    </div>
   )
 }
 
