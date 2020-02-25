@@ -1,16 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 
 import { Paper, List, ListSubheader, ListItem, ListItemAvatar, Avatar, ListItemSecondaryAction, ListItemText, Switch } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
+import { UserContext } from './context/UserContext'
 
 const Repositories = ({ repos }) => {
   const [fullHeight, setFullHeight] = useState(false)
   const [subscribed, setSubscribed] = useState([])
+  const [isLoading, setLoading] = useState(false)
+
+  const { activeOrg } = useContext(UserContext)
 
   const changeHeight = () => {
     setFullHeight(!fullHeight)
   }
+
+  useEffect(() => {
+    if (!repos || !activeOrg) {
+      setLoading(true)
+    } else if (repos[activeOrg]) {
+      setLoading(false)
+    }
+  })
 
   const handleToggle = value => () => {
     const currentIndex = subscribed.indexOf(value)
@@ -26,8 +38,8 @@ const Repositories = ({ repos }) => {
   }
 
   useEffect(() => {
-    if (subscribed) {
-      console.log(subscribed)
+    if (subscribed.length > 0) {
+      console.log('Subscribed ', subscribed)
     }
   }, [subscribed])
 
@@ -44,7 +56,8 @@ const Repositories = ({ repos }) => {
             </ListSubheader>
           }
         >
-          {repos.map(repo => {
+          {isLoading ? 'Loading...' : ''}
+          {repos[activeOrg] ? repos[activeOrg].map(repo => {
             return (
               <ListItem key={repo.id} style={{ borderBottom: '1px solid #eee' }}>
                 <ListItemAvatar>
@@ -63,7 +76,7 @@ const Repositories = ({ repos }) => {
 
               </ListItem>
             )
-          })}
+          }) : 'No repos to show'}
         </List>
       </Paper>
     </div>

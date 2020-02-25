@@ -1,29 +1,27 @@
-import React, { useState, useEffect } from 'react'
-import { InputLabel, MenuItem, FormControl, Select, Grid, Typography } from '@material-ui/core'
+import React, { useEffect, useContext } from 'react'
+import { InputLabel, MenuItem, FormControl, Select } from '@material-ui/core'
+import { UserContext } from './context/UserContext'
 
-const OrgSelector = (props) => {
-  const [selected, updateSelected] = useState('')
+const OrgSelector = ({ orgs }) => {
+  const { activeOrg, setActiveOrg } = useContext(UserContext)
 
   useEffect(() => {
-    handleUpdate(props.orgs[0].login)
-  }, [])
-
-  const handleUpdate = (value) => {
-    updateSelected(value)
-    props.handleChange(value)
-  }
+    if (!activeOrg) {
+      setActiveOrg(orgs[0])
+    }
+  }, [orgs])
 
   return (
     <FormControl style={{ minWidth: '150px' }}>
       <InputLabel id='select-organization-label'>Organization</InputLabel>
       <Select
         labelId='select-organization-label'
-        value={selected}
+        value={activeOrg || ''}
         id='select-org-dropdown'
-        onChange={(e) => handleUpdate(e.target.value)}
+        onChange={(e) => setActiveOrg(e.target.value)}
       >
-        {props.orgs && props.orgs.map(org => (
-          <MenuItem key={org.login} value={org.login}>{org.login}</MenuItem>
+        {orgs && orgs.map(org => (
+          <MenuItem key={org} value={org}>{org}</MenuItem>
         ))}
       </Select>
     </FormControl>

@@ -5,6 +5,7 @@ export const AuthContext = createContext()
 const AuthContextProvider = props => {
   const [token, setToken] = useState('')
 
+
   return (
     <AuthContext.Provider value={{ token, setToken }}>
       {props.children}

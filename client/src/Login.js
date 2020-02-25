@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 import queryString from 'query-string'
-import { Grid, Button, Paper, Typography } from '@material-ui/core'
+import { Button, Paper, Typography } from '@material-ui/core'
 import GitHubIcon from '@material-ui/icons/GitHub'
 
 import { AuthContext } from './context/AuthContext'

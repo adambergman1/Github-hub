@@ -8,53 +8,65 @@ import Repositories from './Repositories'
 import OrganizationSubscriptionSettings from './OrganizationSubscriptionSettings'
 
 import { CircularProgress, Grid } from '@material-ui/core'
+import { indexArray } from './helpers'
 
 function Dashboard () {
   const { token } = useContext(AuthContext)
-  const { user, setUser } = useContext(UserContext)
+  const { setUser, activeOrg } = useContext(UserContext)
 
   const [isLoading, setLoading] = useState(false)
-  const [orgs, setOrgs] = useState()
-  const [repos, setRepos] = useState()
+  const [orgs, setOrgs] = useState({})
+  const [repos, setRepos] = useState({})
 
   useEffect(() => {
-    fetchData(token, 'user', setUser)
-    fetchData(token, 'user/orgs', setOrgs)
+    if (token) {
+      Promise.all([fetchData('user'), fetchData('user/orgs')])
+        .then(([user, orgs]) => {
+          setUser(user)
+          setOrgs(indexArray('login', [user, ...orgs]))
+        })
+    }
   }, [token])
 
   useEffect(() => {
-    if (user) {
-      console.log('User: ', user)
-    }
-  }, [user])
-
-  useEffect(() => {
-    if (orgs) {
-      console.log('Orgs: ', orgs)
-    }
-  }, [orgs])
-
-  useEffect(() => {
     if (repos) {
-      console.log('Repos: ', repos)
+      console.log('Repos:: ', repos)
     }
   }, [repos])
 
-  function fetchData (token, path, callback) {
+  useEffect(() => {
+    if (activeOrg) {
+      console.log('Active org:: ', activeOrg)
+      getRepositories()
+    }
+  }, [activeOrg])
+
+  function fetchData (path) {
     if (token) {
       setLoading(true)
 
-      window.fetch(`https://api.github.com/${path}`, {
+      return window.fetch(`https://api.github.com/${path}`, {
         headers: { Authorization: 'token ' + token }
       }).then((response) => response.json()).then((res) => {
-        callback(res)
         setLoading(false)
+        return res
       })
     }
   }
 
-  function getRepositories (org) {
-    fetchData(token, 'orgs/' + org + '/repos?page=1&per_page=30', setRepos)
+  function getRepositories (page = '1', perPage = '2') {
+    const org = orgs[activeOrg]
+    const url = `${org.repos_url}?page=${page}&per_page=${perPage}`
+
+    if (repos) {
+      if (!repos[org.login]) {
+        window.fetch(url, { headers: { Authorization: 'token ' + token } })
+          .then((response) => response.json())
+          .then((rs) => {
+            setRepos({ ...repos, [org.login]: rs })
+          })
+      }
+    }
   }
 
   return (
@@ -64,12 +76,11 @@ function Dashboard () {
           <div className='loading'>
             <CircularProgress />
           </div>}
-        {user && <p>Welcome {user.name}</p>}
 
         <div className='organizations'>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              {orgs && <OrgSelector orgs={orgs} handleChange={getRepositories} />}
+              <OrgSelector orgs={Object.keys(orgs)} />
             </Grid>
           </Grid>
         </div>
@@ -80,7 +91,7 @@ function Dashboard () {
               <OrganizationSubscriptionSettings />
             </Grid>
             <Grid item md={8} xs={12}>
-              {repos && <Repositories repos={repos} />}
+              {repos && activeOrg ? <Repositories repos={repos} /> : ''}
             </Grid>
             <Grid item md={4} xs={12}>
               <Notifications />
