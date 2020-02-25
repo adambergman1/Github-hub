@@ -18,6 +18,22 @@ const Login = () => {
     }
   }, [token])
 
+  // useEffect(() => {
+  //   const code = queryString.parse(window.location.search).code
+  //   if (code) {
+  //     window.fetch('https://sls-github.adambergman.me/oauth/callback?code=' + code, {
+  //       mode: 'cors',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       }
+  //     })
+  //       .then(res => res.json())
+  //       .then((result) => console.log(result))
+  //     // setToken(userToken)
+  //     // window.history.pushState({}, document.title, '/')
+  //   }
+  // }, [token])
+
   return (
     !token && (
       <Paper className='login-area'>

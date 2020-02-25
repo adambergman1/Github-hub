@@ -11,8 +11,8 @@ import { CircularProgress, Grid } from '@material-ui/core'
 import { indexArray } from './helpers'
 
 function Dashboard () {
-  const { token } = useContext(AuthContext)
-  const { setUser, activeOrg } = useContext(UserContext)
+  const { token, setToken } = useContext(AuthContext)
+  const { user, setUser, activeOrg } = useContext(UserContext)
 
   const [isLoading, setLoading] = useState(false)
   const [orgs, setOrgs] = useState({})
@@ -29,14 +29,7 @@ function Dashboard () {
   }, [token])
 
   useEffect(() => {
-    if (repos) {
-      console.log('Repos:: ', repos)
-    }
-  }, [repos])
-
-  useEffect(() => {
     if (activeOrg) {
-      console.log('Active org:: ', activeOrg)
       getRepositories()
     }
   }, [activeOrg])
@@ -54,16 +47,17 @@ function Dashboard () {
     }
   }
 
-  function getRepositories (page = '1', perPage = '2') {
+  function getRepositories (page = '1', perPage = '25') {
     const org = orgs[activeOrg]
-    const url = `${org.repos_url}?page=${page}&per_page=${perPage}`
+    const url = `${org.repos_url}?page=${page}&per_page=${perPage}&sort=pushed`
 
     if (repos) {
       if (!repos[org.login]) {
         window.fetch(url, { headers: { Authorization: 'token ' + token } })
           .then((response) => response.json())
           .then((rs) => {
-            setRepos({ ...repos, [org.login]: rs })
+            const reposWithAdminAccess = rs.filter(r => r.permissions.admin === true)
+            setRepos({ ...repos, [org.login]: reposWithAdminAccess })
           })
       }
     }
