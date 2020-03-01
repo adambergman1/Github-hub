@@ -38,7 +38,7 @@ const Repositories = ({ repos }) => {
   }
 
   useEffect(() => {
-    if (subscribed.length > 0) {
+    if (subscribed.length) {
       console.log('Subscribed ', subscribed)
     }
   }, [subscribed])
@@ -83,7 +83,13 @@ const Repositories = ({ repos }) => {
                 </ListItem>
               )
             }) : (
-              <ListItem key='no-repo-items'>No repositories found</ListItem>
+              <ListItem key='no-repo-items'>
+                <ListItemText
+                  id='switch-list-label-notifications'
+                  primary='No repositories found'
+                  secondary='Only repositories with admin permissions are listed here'
+                />
+              </ListItem>
             )
           )}
         </List>

@@ -4,7 +4,7 @@ import { Paper, List, ListSubheader, ListItem, ListItemSecondaryAction, ListItem
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 
-const OrganizationSubscriptionSettings = () => {
+const OrganizationSubscriptionSettings = ({ orgs }) => {
   const [fullHeight, setFullHeight] = useState(false)
   const [subscribed, setSubscribed] = useState([])
 

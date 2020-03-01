@@ -81,9 +81,11 @@ function Dashboard () {
 
         <div style={{ flexGrow: '1' }}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <OrganizationSubscriptionSettings />
-            </Grid>
+            {activeOrg !== Object.keys(orgs)[0] && (
+              <Grid item xs={12}>
+                <OrganizationSubscriptionSettings orgs={Object.keys(orgs)} />
+              </Grid>
+            )}
             <Grid item md={8} xs={12}>
               {repos && activeOrg ? <Repositories repos={repos} /> : ''}
             </Grid>
