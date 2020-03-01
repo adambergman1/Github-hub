@@ -12,6 +12,7 @@ const Header = props => {
   const handleLogout = () => {
     setToken('')
     setUser('')
+    document.cookie = 'token=; Max-Age=0'
   }
 
   return (

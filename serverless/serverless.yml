@@ -47,3 +47,10 @@ functions:
           path: /
           method: get
           cors: true
+  user:
+    handler: lambdas/user.handler
+    events:
+      - http:
+          path: /user
+          method: post
+          cors: true

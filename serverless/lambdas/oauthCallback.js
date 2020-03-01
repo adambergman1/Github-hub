@@ -25,9 +25,10 @@ exports.handler = async event => {
   return {
     statusCode: 302,
     headers: {
-      Location: `${process.env.CLIENT_URL}/?access_token=${token}`,
       'Access-Control-Allow-Credentials': true,
-      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': '*',
+      'Set-Cookie': `token=${token}; Max-Age=3600; HttpOnly; Secure;`,
+      Location: `${process.env.CLIENT_URL}/?access_token=${token}`
     }
   }
 }

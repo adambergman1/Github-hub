@@ -11,8 +11,8 @@ import { CircularProgress, Grid } from '@material-ui/core'
 import { indexArray } from './helpers'
 
 function Dashboard () {
-  const { token, setToken } = useContext(AuthContext)
-  const { user, setUser, activeOrg } = useContext(UserContext)
+  const { token } = useContext(AuthContext)
+  const { setUser, activeOrg } = useContext(UserContext)
 
   const [isLoading, setLoading] = useState(false)
   const [orgs, setOrgs] = useState({})

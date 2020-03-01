@@ -14,9 +14,30 @@ const Login = () => {
     const userToken = queryString.parse(window.location.search).access_token
     if (userToken) {
       setToken(userToken)
+      setCookie(userToken)
       window.history.pushState({}, document.title, '/')
+    } else {
+      const savedCookie = getCookie()
+      if (savedCookie) {
+        setToken(savedCookie)
+      }
     }
   }, [token])
+
+  const setCookie = (value) => {
+    const date = new Date()
+    date.setTime(date.getTime() + (1 * 60 * 60 * 1000))
+    document.cookie = 'token=' + value + '; expires=' + date.toUTCString()
+  }
+
+  const getCookie = () => {
+    const cookie = {}
+    document.cookie.split(';').forEach((el) => {
+      const [k, v] = el.split('=')
+      cookie[k.trim()] = v
+    })
+    return cookie.token
+  }
 
   // useEffect(() => {
   //   const code = queryString.parse(window.location.search).code
