@@ -9,11 +9,4 @@ const indexArray = (key, array, property) => {
   }), {})
 }
 
-// const indexArray = (key, array) => {
-//   return array.reduce((indexed, item) => ({
-//     ...indexed,
-//     [item[key]]: item
-//   }), {})
-// }
-
 module.exports = { indexArray }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { AuthContext } from './context/AuthContext'
-import { UserContext } from './context/UserContext'
+import { AuthContext } from '../context/AuthContext'
+import { UserContext } from '../context/UserContext'
 
 import OrgSelector from './OrgSelector'
 import Notifications from './Notifications'
@@ -8,7 +8,7 @@ import Repositories from './Repositories'
 import OrganizationSubscriptionSettings from './OrganizationSubscriptionSettings'
 
 import { CircularProgress, Grid } from '@material-ui/core'
-import { indexArray } from './helpers'
+import { indexArray } from '../helpers'
 
 function Dashboard () {
   const { token } = useContext(AuthContext)

@@ -2,8 +2,8 @@ import React, { useContext } from 'react'
 import { AppBar, Toolbar, Typography, IconButton, Badge } from '@material-ui/core'
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined'
 import InputIcon from '@material-ui/icons/Input'
-import { AuthContext } from './context/AuthContext'
-import { UserContext } from './context/UserContext'
+import { AuthContext } from '../../context/AuthContext'
+import { UserContext } from '../../context/UserContext'
 
 const Header = props => {
   const { setToken } = useContext(AuthContext)

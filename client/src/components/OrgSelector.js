@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 import { InputLabel, MenuItem, FormControl, Select } from '@material-ui/core'
-import { UserContext } from './context/UserContext'
+import { UserContext } from '../context/UserContext'
 
 const OrgSelector = ({ orgs }) => {
   const { activeOrg, setActiveOrg } = useContext(UserContext)

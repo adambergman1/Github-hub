@@ -1,9 +1,9 @@
 import React from 'react'
 
-import Login from './Login'
-import Dashboard from './Dashboard'
-import Header from './Header'
-import Footer from './Footer'
+import Login from './components/Login'
+import Dashboard from './components/Dashboard'
+import Header from './components/layouts/Header'
+import Footer from './components/layouts/Footer'
 
 import AuthContextProvider from './context/AuthContext'
 import UserContextProvider from './context/UserContext'

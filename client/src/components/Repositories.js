@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react'
 
-import { Paper, List, ListSubheader, ListItem, ListItemAvatar, Avatar, ListItemSecondaryAction, ListItemText, Switch } from '@material-ui/core'
+import { Paper, List, ListSubheader, ListItem, ListItemAvatar, Avatar, ListItemSecondaryAction, ListItemText, Switch, CircularProgress } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
-import { UserContext } from './context/UserContext'
+import { UserContext } from '../context/UserContext'
 
 const Repositories = ({ repos }) => {
   const [fullHeight, setFullHeight] = useState(false)
@@ -17,12 +17,12 @@ const Repositories = ({ repos }) => {
   }
 
   useEffect(() => {
-    if (!repos || !activeOrg) {
-      setLoading(true)
-    } else if (repos[activeOrg]) {
+    if (repos[activeOrg]) {
       setLoading(false)
+    } else {
+      setLoading(true)
     }
-  })
+  }, [repos, activeOrg])
 
   const handleToggle = value => () => {
     const currentIndex = subscribed.indexOf(value)
@@ -56,27 +56,36 @@ const Repositories = ({ repos }) => {
             </ListSubheader>
           }
         >
-          {isLoading ? 'Loading...' : ''}
-          {repos[activeOrg] ? repos[activeOrg].map(repo => {
-            return (
-              <ListItem key={repo.id} style={{ borderBottom: '1px solid #eee' }}>
-                <ListItemAvatar>
-                  <Avatar src={repo.owner.avatar_url} />
-                </ListItemAvatar>
+          {isLoading ? (
+            <ListItem key='loading'>
+              <div className='loading'>
+                <CircularProgress />
+              </div>
+            </ListItem>
+          ) : (
+            repos[activeOrg] && repos[activeOrg].length ? repos[activeOrg].map(repo => {
+              return (
+                <ListItem key={repo.id} style={{ borderBottom: '1px solid #eee' }}>
+                  <ListItemAvatar>
+                    <Avatar src={repo.owner.avatar_url} />
+                  </ListItemAvatar>
 
-                <ListItemText id='switch-list-label-notifications' primary={repo.name} secondary={repo.description} />
-                <ListItemSecondaryAction>
-                  <Switch
-                    edge='end'
-                    onChange={handleToggle(repo.id)}
-                    checked={subscribed.indexOf(repo.id) !== -1}
-                    inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
-                  />
-                </ListItemSecondaryAction>
+                  <ListItemText id='switch-list-label-notifications' primary={repo.name} secondary={repo.description} />
+                  <ListItemSecondaryAction>
+                    <Switch
+                      edge='end'
+                      onChange={handleToggle(repo.id)}
+                      checked={subscribed.indexOf(repo.id) !== -1}
+                      inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
+                    />
+                  </ListItemSecondaryAction>
 
-              </ListItem>
+                </ListItem>
+              )
+            }) : (
+              <ListItem key='no-repo-items'>No repositories found</ListItem>
             )
-          }) : 'No repos to show'}
+          )}
         </List>
       </Paper>
     </div>

@@ -3,7 +3,7 @@ import queryString from 'query-string'
 import { Button, Paper, Typography } from '@material-ui/core'
 import GitHubIcon from '@material-ui/icons/GitHub'
 
-import { AuthContext } from './context/AuthContext'
+import { AuthContext } from '../context/AuthContext'
 
 const clientId = '9e33cf9f01b5b67cb4d6'
 
