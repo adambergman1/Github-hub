@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from 'react'
 import queryString from 'query-string'
 import { Button, Paper, Typography } from '@material-ui/core'
 import GitHubIcon from '@material-ui/icons/GitHub'
+import { setCookie, getCookie } from '../helpers/cookies'
 
 import { AuthContext } from '../context/AuthContext'
 
@@ -23,21 +24,6 @@ const Login = () => {
       }
     }
   }, [token])
-
-  const setCookie = (value) => {
-    const date = new Date()
-    date.setTime(date.getTime() + (1 * 60 * 60 * 1000))
-    document.cookie = 'token=' + value + '; expires=' + date.toUTCString()
-  }
-
-  const getCookie = () => {
-    const cookie = {}
-    document.cookie.split(';').forEach((el) => {
-      const [k, v] = el.split('=')
-      cookie[k.trim()] = v
-    })
-    return cookie.token
-  }
 
   // useEffect(() => {
   //   const code = queryString.parse(window.location.search).code
@@ -66,7 +52,7 @@ const Login = () => {
         <Button
           color='primary'
           variant='outlined'
-          href={`https://github.com/login/oauth/authorize?client_id=${clientId}&scope=user,repo,admin:org_hook`}
+          href={`https://github.com/login/oauth/authorize?client_id=${clientId}&scope=user,repo,admin:repo_hook,admin:org_hook`}
           style={{ marginTop: '10px' }}
         >
           Login

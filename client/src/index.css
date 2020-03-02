@@ -66,6 +66,12 @@ svg.github-icon {
   overflow: auto;
 }
 
+.xs-height {
+  max-height: 280px;
+  height: auto;
+  overflow: auto;
+}
+
 .toggle-button {
   border-radius: 50%;
   border: 1px solid #000;

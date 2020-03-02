@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Paper, List, ListSubheader, ListItem, ListItemSecondaryAction, ListItemText, Switch } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -25,11 +25,17 @@ const OrganizationSubscriptionSettings = ({ orgs }) => {
     setSubscribed(newChecked)
   }
 
+  useEffect(() => {
+    if (subscribed.length) {
+      console.log('Subscribed orgs ', subscribed)
+    }
+  }, [subscribed])
+
   return (
     <div className='organization-details'>
       <Paper>
         <List
-          className={!fullHeight ? 'small-height' : ''} dense subheader={
+          className={!fullHeight ? 'xs-height' : ''} dense subheader={
             <ListSubheader className='flex align-center space-between' style={{ background: '#eee' }}>
               Select your prefered notification settings
               {!fullHeight
