@@ -1,7 +1,7 @@
 const Responses = require('../common/API_Responses')
 const Dynamo = require('../common/Dynamo')
 
-const tableName = process.env.TABLE_NAME
+const tableName = process.env.WSS_TABLE_NAME
 
 exports.handler = async event => {
   console.log('event', event)
@@ -14,7 +14,7 @@ exports.handler = async event => {
     messages: []
   }
 
-  await Dynamo.write({ data, tableName })
+  await Dynamo.write(data, tableName)
 
   return Responses._200({ message: 'Connected' })
 }

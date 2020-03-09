@@ -10,17 +10,24 @@ provider:
   environment:
     CLIENT_ID: ${ssm:/login/clientId~true}
     CLIENT_SECRET: ${ssm:/login/clientSecret~true}
-    TABLE_NAME: ${self:custom.tableName}
+    USERS_TABLE_NAME: ${self:custom.usersTableName}
+    WSS_TABLE_NAME: ${self:custom.wssTableName}
     # CLIENT_URL: https://github-app.adambergman.me
     CLIENT_URL: http://localhost:3000
     SERVER_URL: https://sls-github.adambergman.me
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+          - dynamodb:*
+      Resource: '*'
 
 plugins:
   - serverless-finch
   - serverless-domain-manager
 
 custom:
-  tableName: WebSocketUsers
+  usersTableName: users
+  wssTableName: webSocketUsers
   client:
     bucketName: github-app.adambergman.me
     distributionFolder: ../client/build
@@ -54,3 +61,55 @@ functions:
           path: /user
           method: post
           cors: true
+  getWebhook:
+    handler: lambdas/getNotification.handler
+    events:
+      - http:
+          path: /webhook
+          method: post
+          cors: true
+  websocket-connect:
+    handler: lambdas/websockets/connect.handler
+    events:
+      - websocket:
+          route: $connect
+  websocket-disconnect:
+    handler: lambdas/websockets/disconnect.handler
+    events:
+      - websocket:
+          route: $disconnect
+  websocket-default:
+    handler: lambdas/websockets/default.handler
+    events:
+      - websocket:
+          route: $default
+  websocket-events:
+    handler: lambdas/websockets/message.handler
+    events:
+      - websocket:
+          route: message
+
+resources:
+  Resources:
+      WebSocketUsersTable:
+          Type: AWS::DynamoDB::Table
+          Properties:
+              TableName: ${self:custom.wssTableName}
+              AttributeDefinitions:
+                  - AttributeName: ID
+                    AttributeType: S
+              KeySchema:
+                  - AttributeName: ID
+                    KeyType: HASH
+              BillingMode: PAY_PER_REQUEST
+      usersTable:
+        Type: AWS::DynamoDB::Table
+        Properties:
+          TableName: ${self:custom.usersTableName}
+          AttributeDefinitions:
+            - AttributeName: ID
+              AttributeType: S
+          KeySchema:
+            - AttributeName: ID
+              KeyType: HASH
+          BillingMode: PAY_PER_REQUEST

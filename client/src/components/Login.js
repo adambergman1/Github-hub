@@ -9,40 +9,24 @@ import { AuthContext } from '../context/AuthContext'
 const clientId = '9e33cf9f01b5b67cb4d6'
 
 const Login = () => {
-  const { token, setToken } = useContext(AuthContext)
+  const { isAuthenticated, setAuthenticated } = useContext(AuthContext)
 
   useEffect(() => {
     const userToken = queryString.parse(window.location.search).access_token
     if (userToken) {
-      setToken(userToken)
+      setAuthenticated(true)
       setCookie(userToken)
       window.history.pushState({}, document.title, '/')
     } else {
       const savedCookie = getCookie()
       if (savedCookie) {
-        setToken(savedCookie)
+        setAuthenticated(true)
       }
     }
-  }, [token])
-
-  // useEffect(() => {
-  //   const code = queryString.parse(window.location.search).code
-  //   if (code) {
-  //     window.fetch('https://sls-github.adambergman.me/oauth/callback?code=' + code, {
-  //       mode: 'cors',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       }
-  //     })
-  //       .then(res => res.json())
-  //       .then((result) => console.log(result))
-  //     // setToken(userToken)
-  //     // window.history.pushState({}, document.title, '/')
-  //   }
-  // }, [token])
+  }, [!isAuthenticated])
 
   return (
-    !token && (
+    !isAuthenticated && (
       <Paper className='login-area'>
         <h1>GitHub-Hub</h1>
         <Typography style={{ marginBottom: '1em' }}>For a better overview of your many repositories spread out along different organizations on Github</Typography>

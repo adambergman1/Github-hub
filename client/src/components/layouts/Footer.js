@@ -3,7 +3,7 @@ import { Container, Grid, Link, Typography } from '@material-ui/core'
 
 const Footer = () => {
   return (
-    <div className='footer'>
+    <footer className='footer'>
       <Container>
         <Grid>
           <Grid item xs={12}>
@@ -17,7 +17,7 @@ const Footer = () => {
           </Grid>
         </Grid>
       </Container>
-    </div>
+    </footer>
   )
 }
 

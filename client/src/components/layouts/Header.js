@@ -3,40 +3,43 @@ import { AppBar, Toolbar, Typography, IconButton, Badge } from '@material-ui/cor
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined'
 import InputIcon from '@material-ui/icons/Input'
 import { AuthContext } from '../../context/AuthContext'
-import { UserContext } from '../../context/UserContext'
+import { GithubContext } from '../../context/GithubContext'
 
 const Header = props => {
-  const { setToken } = useContext(AuthContext)
-  const { user, setUser } = useContext(UserContext)
+  const { isAuthenticated, setAuthenticated } = useContext(AuthContext)
+  const { user, setUser } = useContext(GithubContext)
 
   const handleLogout = () => {
-    setToken('')
+    setAuthenticated(false)
     setUser('')
     document.cookie = 'token=; Max-Age=0'
   }
 
   return (
-    <div style={{ flexGrow: '1' }}>
-      <AppBar color='primary' position='relative'>
-        <Toolbar style={{ alignItems: 'center' }}>
+    <AppBar color='primary' position='relative'>
+      <Toolbar style={{ alignItems: 'center' }}>
 
-          <Typography style={{ flexGrow: 1 }} variant='h6' noWrap>GitHub-Hub</Typography>
+        <Typography style={{ flexGrow: 1 }} variant='h6' noWrap>GitHub-Hub</Typography>
 
-          <IconButton color='inherit' edge='end'>
-            <Badge color='primary' variant='dot'>
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
+        {
+          isAuthenticated && (
+            <>
+              <IconButton color='inherit' edge='end'>
+                <Badge color='primary' variant='dot'>
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
 
-          <IconButton onClick={handleLogout} edge='end' color='inherit'>
-            <InputIcon style={{ marginRight: '5px' }} />
-            <Typography variant='body2' noWrap>{user ? user.login : ''}</Typography>
-          </IconButton>
+              <IconButton onClick={handleLogout} edge='end' color='inherit'>
+                <InputIcon style={{ marginRight: '5px' }} />
+                <Typography variant='body2' noWrap>{user ? user.login : ''}</Typography>
+              </IconButton>
+            </>
+          )
+        }
 
-        </Toolbar>
-      </AppBar>
-
-    </div>
+      </Toolbar>
+    </AppBar>
   )
 }
 

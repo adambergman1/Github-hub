@@ -90,6 +90,13 @@ svg.github-icon {
 }
 
 .dashboard {
+  flex-grow: 1;
   padding-top: 30px;
   padding-bottom: 60px;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
