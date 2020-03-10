@@ -9,7 +9,7 @@ exports.handler = async event => {
   const { connectionId: connectionID } = event.requestContext
 
   const data = {
-    ID: connectionID,
+    id: connectionID,
     date: Date.now(),
     messages: []
   }

@@ -26,8 +26,8 @@ plugins:
   - serverless-domain-manager
 
 custom:
-  usersTableName: users
-  wssTableName: webSocketUsers
+  usersTableName: githubUsers
+  wssTableName: socketUsers
   client:
     bucketName: github-app.adambergman.me
     distributionFolder: ../client/build
@@ -61,6 +61,13 @@ functions:
           path: /user
           method: post
           cors: true
+  updateUser:
+    handler: lambdas/updateUser.handler
+    events:
+      - http:
+          path: /updateUser
+          method: post
+          cors: true
   getWebhook:
     handler: lambdas/getNotification.handler
     events:
@@ -91,25 +98,25 @@ functions:
 
 resources:
   Resources:
-      WebSocketUsersTable:
-          Type: AWS::DynamoDB::Table
-          Properties:
-              TableName: ${self:custom.wssTableName}
-              AttributeDefinitions:
-                  - AttributeName: ID
-                    AttributeType: S
-              KeySchema:
-                  - AttributeName: ID
-                    KeyType: HASH
-              BillingMode: PAY_PER_REQUEST
-      usersTable:
-        Type: AWS::DynamoDB::Table
-        Properties:
-          TableName: ${self:custom.usersTableName}
-          AttributeDefinitions:
-            - AttributeName: ID
-              AttributeType: S
-          KeySchema:
-            - AttributeName: ID
-              KeyType: HASH
-          BillingMode: PAY_PER_REQUEST
+    WebSocketUsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.wssTableName}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.usersTableName}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: N
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST

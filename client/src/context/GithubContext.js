@@ -1,5 +1,4 @@
 import React, { createContext, useState } from 'react'
-import { getCookie } from '../helpers/cookies'
 
 export const GithubContext = createContext()
 
@@ -8,23 +7,22 @@ const GithubContextProvider = props => {
   const [activeOrg, setActiveOrg] = useState()
   const [orgs, setOrgs] = useState({})
   const [repos, setRepos] = useState({})
+  const [userSettings, setUserSettings] = useState()
 
   const githubURL = 'https://api.github.com/'
   const serverURL = 'https://sls-github.adambergman.me'
 
-  const token = getCookie()
-
-  const fetchData = (url) => {
+  const fetchData = (url, token) => {
     if (token) {
       return window.fetch(url, {
         headers: { Authorization: 'token ' + token }
-      }).then((response) => response.json()).then((res) => {
-        return res
-      })
+      }).then((response) => response.json())
+    } else {
+      throw new Error('fetchData: Missing token')
     }
   }
 
-  const getRepositories = (page = '1', perPage = '100') => {
+  const getRepositories = (token, page = '1', perPage = '100') => {
     const org = orgs[activeOrg]
     const reposAlreadyFetched = repos[org.login]
     let url = ''
@@ -36,7 +34,7 @@ const GithubContextProvider = props => {
         } else {
           url = `${org.repos_url}?page=${page}&per_page=${perPage}`
         }
-        fetchData(url)
+        fetchData(url, token)
           .then((rs) => {
             const adminRepos = rs.filter(r => r.permissions.admin === true)
             setRepos({ ...repos, [org.login]: adminRepos })
@@ -45,7 +43,7 @@ const GithubContextProvider = props => {
     }
   }
 
-  const saveUser = () => {
+  const saveAndSetUser = () => {
     window.fetch(serverURL + '/user', {
       method: 'POST',
       mode: 'cors',
@@ -54,12 +52,48 @@ const GithubContextProvider = props => {
       },
       body: JSON.stringify({
         id: user.id,
-        username: user.login,
-        latestLogin: new Date()
+        username: user.login
       })
-    }).then(res => res.json()).then(result => {
+    }).then(res => res.json())
+      .then(result => setUserSettings(result))
+      .catch(err => console.log(err))
+  }
+
+  const updateUserSettings = (repoId, data) => {
+    const obj = {
+      id: userSettings.id,
+      repo: { repoId, data }
+    }
+
+    window.fetch(serverURL + '/updateUser', {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify(obj)
+    }).catch(err => console.log(err))
+  }
+
+  const addHook = (token, url) => {
+    const config = {
+      name: 'web',
+      active: true,
+      events: ['commits', 'issues', 'push'],
+      config: {
+        url: serverURL + '/webhook',
+        content_type: 'json',
+        insecure_ssl: 0
+      }
+    }
+
+    console.log('Adding hook...', url)
+
+    window.fetch(url, {
+      method: 'POST',
+      headers: { Authorization: 'token ' + token },
+      body: JSON.stringify(config)
+    }).then(res => res.json().then(result => {
       return result
-    })
+    })).catch(err => console.log(err))
   }
 
   return (
@@ -74,7 +108,10 @@ const GithubContextProvider = props => {
       setRepos,
       fetchData,
       getRepositories,
-      saveUser
+      saveAndSetUser,
+      updateUserSettings,
+      userSettings,
+      addHook
     }}
     >
       {props.children}

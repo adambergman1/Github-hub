@@ -105,30 +105,6 @@ const OrganizationSubscriptionSettings = ({ orgs }) => {
             </ListItemSecondaryAction>
           </ListItem>
 
-          <ListItem key='pull-request-review'>
-            <ListItemText id='switch-list-label-notifications' primary='Pull request review' secondary='Triggered when a pull request review is submitted into a non-pending state, the body is edited, or the review is dismissed.' />
-            <ListItemSecondaryAction>
-              <Switch
-                edge='end'
-                onChange={handleToggle('pull-request-review')}
-                checked={subscribed.indexOf('pull-request-review') !== -1}
-                inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
-              />
-            </ListItemSecondaryAction>
-          </ListItem>
-
-          <ListItem key='push'>
-            <ListItemText id='switch-list-label-notifications' primary='Push' secondary='Triggered on a push to a repository branch.' />
-            <ListItemSecondaryAction>
-              <Switch
-                edge='end'
-                onChange={handleToggle('push')}
-                checked={subscribed.indexOf('push') !== -1}
-                inputProps={{ 'aria-labelledby': 'switch-list-label-notification' }}
-              />
-            </ListItemSecondaryAction>
-          </ListItem>
-
           <ListItem key='release'>
             <ListItemText id='switch-list-label-notifications' primary='Release' secondary='Triggered when a release is published, unpublished, created, edited, deleted, or prereleased.' />
             <ListItemSecondaryAction>

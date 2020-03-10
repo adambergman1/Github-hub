@@ -7,17 +7,14 @@ import Footer from './components/layouts/Footer'
 
 import GithubContextProvider from './context/GithubContext'
 import AuthContextProvider from './context/AuthContext'
-import UserContextProvider from './context/UserContext'
 
 function App () {
   return (
     <div className='App'>
       <AuthContextProvider>
         <GithubContextProvider>
-          <UserContextProvider>
-            <Header />
-            <Dashboard />
-          </UserContextProvider>
+          <Header />
+          <Dashboard />
           <Login />
         </GithubContextProvider>
       </AuthContextProvider>
