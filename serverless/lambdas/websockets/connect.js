@@ -11,7 +11,7 @@ exports.handler = async event => {
   const data = {
     id: connectionID,
     date: Date.now(),
-    messages: []
+    userId: event.queryStringParameters.userId
   }
 
   await Dynamo.write(data, tableName)

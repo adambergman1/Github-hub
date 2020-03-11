@@ -5,18 +5,27 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 
 const Notifications = () => {
   const [fullHeight, setFullHeight] = useState(false)
+  const [notifications, setNotifications] = useState([])
 
   const changeHeight = () => {
     setFullHeight(!fullHeight)
   }
 
-  function generate (element) {
-    return [0, 1, 2].map(value =>
-      React.cloneElement(element, {
-        key: value
+  useEffect(() => {
+    if (user) {
+      const socket = new window.WebSocket(`wss://uw9jdvyktk.execute-api.us-east-1.amazonaws.com/dev?userId=${user.id}`)
+
+      socket.addEventListener('open', event => {
+        console.log('Socket is open')
       })
-    )
-  }
+
+      socket.addEventListener('message', event => {
+        const data = JSON.parse(event.data)
+        console.log('Data from socket', data)
+      })
+    }
+  }, [user])
+
   return (
     <div className='notifications-feed'>
       <Paper>
@@ -34,14 +43,16 @@ const Notifications = () => {
             </ListSubheader>
           }
         >
-          {generate(
-            <ListItem>
-              <ListItemText
-                primary='Single-line item'
-                secondary='Secondary text'
-              />
-            </ListItem>
-          )}
+          {
+            notifications.map(n => (
+              <ListItem key={n}>
+                <ListItemText
+                  primary='Single-line item'
+                  secondary='Secondary text'
+                />
+              </ListItem>
+            ))
+          }
         </List>
       </Paper>
     </div>

@@ -6,7 +6,7 @@ import { getCookie } from '../helpers/cookies'
 const Repository = ({ repo }) => {
   const [open, setOpen] = useState(false)
   const [subscribed, setSubscribed] = useState([])
-  const values = ['Commits', 'Issues', 'Push']
+  const values = ['Release', 'Issues', 'Push']
 
   const { userSettings, updateUserSettings, addHook } = useContext(GithubContext)
 
@@ -24,7 +24,7 @@ const Repository = ({ repo }) => {
     if (open === false) {
       setOpen(true)
       setSubscribed(values)
-      // addHook(getCookie(), repo.hooks_url)
+      addHook(getCookie(), repo.hooks_url)
     } else {
       setOpen(false)
       setSubscribed([])

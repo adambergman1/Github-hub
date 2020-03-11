@@ -11,7 +11,7 @@ exports.handler = async event => {
   const { message } = JSON.parse(event.body)
 
   try {
-    const record = await Dynamo.getRecord(connectionID, tableName)
+    const record = await Dynamo.get(connectionID, tableName)
     const messages = record.messages
 
     messages.push(message)

@@ -1,18 +1,17 @@
 const AWS = require('aws-sdk')
 
-const create = (domainName, stage) => {
-  const endpoint = `${domainName}/${stage}`
+const create = () => {
   return new AWS.ApiGatewayManagementApi({
     apiVersion: '2018-11-29',
-    endpoint
+    endpoint: 'uw9jdvyktk.execute-api.us-east-1.amazonaws.com/dev'
   })
 }
 
-const send = ({ domainName, stage, connectionID, message }) => {
-  const ws = create(domainName, stage)
+const send = (connectionID, message) => {
+  const ws = create()
 
   const postParams = {
-    Data: message,
+    Data: JSON.stringify(message),
     ConnectionId: connectionID
   }
 

@@ -13,7 +13,7 @@ import { getCookie } from '../helpers/cookies'
 
 function Dashboard () {
   const { isAuthenticated } = useContext(AuthContext)
-  const { fetchData, getRepositories, repos, user, setUser, orgs, setOrgs, activeOrg, saveAndSetUser } = useContext(GithubContext)
+  const { fetchData, getRepositories, repos, setUser, user, orgs, setOrgs, activeOrg, saveAndSetUser } = useContext(GithubContext)
   const [isLoading, setLoading] = useState(false)
 
   const token = getCookie()

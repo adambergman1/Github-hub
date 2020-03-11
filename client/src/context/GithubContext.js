@@ -77,7 +77,7 @@ const GithubContextProvider = props => {
     const config = {
       name: 'web',
       active: true,
-      events: ['commits', 'issues', 'push'],
+      events: ['release', 'issues', 'push'],
       config: {
         url: serverURL + '/webhook',
         content_type: 'json',
