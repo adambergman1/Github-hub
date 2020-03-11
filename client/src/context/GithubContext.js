@@ -34,9 +34,9 @@ const GithubContextProvider = props => {
         }
         fetchData(url, token)
           .then((rs) => {
-            // const adminRepos = rs.filter(r => r.permissions.admin === true)
-            // setRepos({ ...repos, [org.login]: adminRepos })
-            setRepos({ ...repos, [org.login]: rs })
+            const adminRepos = rs.filter(r => r.permissions.admin === true)
+            setRepos({ ...repos, [org.login]: adminRepos })
+            // setRepos({ ...repos, [org.login]: rs })
           })
       }
     }
@@ -69,7 +69,9 @@ const GithubContextProvider = props => {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(obj)
-    }).catch(err => console.log(err))
+    }).then(res => res.json())
+      .then(result => setUserSettings(result))
+      .catch(err => console.log(err))
   }
 
   const addHook = (token, url) => {

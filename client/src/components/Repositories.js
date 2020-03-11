@@ -65,7 +65,7 @@ const Repositories = () => {
           ) : repos[activeOrg] && repos[activeOrg].length ? (
             (rowsPerPage > 0 ? repos[activeOrg].slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : repos[activeOrg])
               .map((repo, i) => (
-                <Repository key={i} repo={repo} />
+                <Repository key={repo.id} repo={repo} />
               ))
           ) : (
             <ListItem key='no-repo-items'>

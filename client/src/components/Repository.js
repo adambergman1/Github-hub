@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { ListItem, ListItemAvatar, Avatar, ListItemText, ListItemSecondaryAction, Switch, Collapse, List } from '@material-ui/core'
 import { GithubContext } from '../context/GithubContext'
-import { getCookie } from '../helpers/cookies'
 
 const Repository = ({ repo }) => {
   const [open, setOpen] = useState(false)
@@ -24,8 +23,8 @@ const Repository = ({ repo }) => {
     if (open === false) {
       setOpen(true)
       setSubscribed(values)
-      addHook(getCookie(), repo.hooks_url)
-      // console.log('Adding hook')
+      // addHook(getCookie(), repo.hooks_url)
+      updateUserSettings(repo.id, values)
     } else {
       setOpen(false)
       setSubscribed([])
@@ -37,21 +36,23 @@ const Repository = ({ repo }) => {
     const includes = subscribed.includes(value)
 
     if (!includes) {
+      updateUserSettings(repo.id, [...subscribed, value])
       setSubscribed([...subscribed, value])
     } else if (subscribed.length === 1) {
       setOpen(false)
       setSubscribed([])
       updateUserSettings(repo.id, [])
     } else {
+      updateUserSettings(repo.id, subscribed.filter(s => s !== value))
       setSubscribed(subscribed.filter(s => s !== value))
     }
   }
 
-  useEffect(() => {
-    if (subscribed.length > 0) {
-      updateUserSettings(repo.id, [...subscribed])
-    }
-  }, [subscribed])
+  // useEffect(() => {
+  //   if (subscribed.length > 0) {
+  //     updateUserSettings(repo.id, [...subscribed])
+  //   }
+  // }, [subscribed])
 
   return (
     <>

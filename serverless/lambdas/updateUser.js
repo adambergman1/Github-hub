@@ -17,7 +17,7 @@ exports.handler = async event => {
   }
 
   if (body.repo.data.length === 0) {
-    item.subscribedRepos = []
+    item.subscribedRepos = user.subscribedRepos.filter(r => r.repoId !== body.repo.repoId)
 
     try {
       await Dynamo.write(item, usersTable)
