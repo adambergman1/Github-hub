@@ -11,20 +11,20 @@ const Notifications = () => {
     setFullHeight(!fullHeight)
   }
 
-  useEffect(() => {
-    if (user) {
-      const socket = new window.WebSocket(`wss://uw9jdvyktk.execute-api.us-east-1.amazonaws.com/dev?userId=${user.id}`)
+  // useEffect(() => {
+  //   if (user) {
+  //     const socket = new window.WebSocket(`wss://uw9jdvyktk.execute-api.us-east-1.amazonaws.com/dev?userId=${user.id}`)
 
-      socket.addEventListener('open', event => {
-        console.log('Socket is open')
-      })
+  //     socket.addEventListener('open', event => {
+  //       console.log('Socket is open')
+  //     })
 
-      socket.addEventListener('message', event => {
-        const data = JSON.parse(event.data)
-        console.log('Data from socket', data)
-      })
-    }
-  }, [user])
+  //     socket.addEventListener('message', event => {
+  //       const data = JSON.parse(event.data)
+  //       console.log('Data from socket', data)
+  //     })
+  //   }
+  // }, [user])
 
   return (
     <div className='notifications-feed'>

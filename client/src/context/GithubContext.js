@@ -17,8 +17,6 @@ const GithubContextProvider = props => {
       return window.fetch(url, {
         headers: { Authorization: 'token ' + token }
       }).then((response) => response.json())
-    } else {
-      throw new Error('fetchData: Missing token')
     }
   }
 
@@ -36,8 +34,9 @@ const GithubContextProvider = props => {
         }
         fetchData(url, token)
           .then((rs) => {
-            const adminRepos = rs.filter(r => r.permissions.admin === true)
-            setRepos({ ...repos, [org.login]: adminRepos })
+            // const adminRepos = rs.filter(r => r.permissions.admin === true)
+            // setRepos({ ...repos, [org.login]: adminRepos })
+            setRepos({ ...repos, [org.login]: rs })
           })
       }
     }

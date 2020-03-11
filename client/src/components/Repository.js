@@ -25,6 +25,7 @@ const Repository = ({ repo }) => {
       setOpen(true)
       setSubscribed(values)
       addHook(getCookie(), repo.hooks_url)
+      // console.log('Adding hook')
     } else {
       setOpen(false)
       setSubscribed([])
