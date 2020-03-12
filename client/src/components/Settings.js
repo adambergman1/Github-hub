@@ -9,7 +9,6 @@ const Settings = () => {
 
   useEffect(() => {
     if (userSettings && userSettings.callbackURL) {
-      console.log(userSettings.callbackURL)
       setURL(userSettings.callbackURL)
     }
   }, [userSettings])

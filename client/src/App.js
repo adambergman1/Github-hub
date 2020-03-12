@@ -7,14 +7,17 @@ import Footer from './components/layouts/Footer'
 
 import GithubContextProvider from './context/GithubContext'
 import AuthContextProvider from './context/AuthContext'
+import WebSocketContextProvider from './context/WebSocketContext'
 
 function App () {
   return (
     <div className='App'>
       <AuthContextProvider>
         <GithubContextProvider>
-          <Header />
-          <Dashboard />
+          <WebSocketContextProvider>
+            <Header />
+            <Dashboard />
+          </WebSocketContextProvider>
           <Login />
         </GithubContextProvider>
       </AuthContextProvider>

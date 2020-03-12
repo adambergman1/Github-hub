@@ -112,6 +112,24 @@ const GithubContextProvider = props => {
       .catch(err => console.log(err))
   }
 
+  const getEvents = (token) => {
+    const path = activeOrg === user.login ? 'users' : 'orgs'
+
+    return fetchData(`${githubURL}${path}/${activeOrg}/events?page=1&per_page=1000`, token)
+      .then(events => {
+        const push = events.filter(e => e.type === 'PushEvent').length
+        const issues = events.filter(e => e.type === 'IssueCommentEvent').length
+        const releases = events.filter(e => e.type === 'ReleaseEvent').length
+
+        const arr = [
+          { name: 'Push', Amount: push },
+          { name: 'Issues', Amount: issues },
+          { name: 'Releases', Amount: releases }
+        ]
+        return arr
+      })
+  }
+
   return (
     <GithubContext.Provider value={{
       user,
@@ -128,7 +146,8 @@ const GithubContextProvider = props => {
       updateUserSettings,
       userSettings,
       addHook,
-      updateUserURL
+      updateUserURL,
+      getEvents
     }}
     >
       {props.children}

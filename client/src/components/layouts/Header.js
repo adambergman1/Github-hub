@@ -4,14 +4,17 @@ import NotificationsIcon from '@material-ui/icons/NotificationsOutlined'
 import InputIcon from '@material-ui/icons/Input'
 import { AuthContext } from '../../context/AuthContext'
 import { GithubContext } from '../../context/GithubContext'
+import { WebSocketContext } from '../../context/WebSocketContext'
 
 const Header = props => {
   const { isAuthenticated, setAuthenticated } = useContext(AuthContext)
   const { user, setUser } = useContext(GithubContext)
+  const { socket } = useContext(WebSocketContext)
 
   const handleLogout = () => {
     setAuthenticated(false)
     setUser('')
+    socket.close()
     document.cookie = 'token=; Max-Age=0'
   }
 

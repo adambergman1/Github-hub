@@ -5,17 +5,18 @@ import { GithubContext } from '../context/GithubContext'
 import OrgSelector from './OrgSelector'
 import Notifications from './Notifications'
 import Repositories from './Repositories'
-import OrgSubSettings from './OrgSubSettings'
 import Settings from './Settings'
 
 import { Container, CircularProgress, Grid } from '@material-ui/core'
 import { indexArray } from '../helpers'
 import { getCookie } from '../helpers/cookies'
+import Activity from './Activity'
 
 function Dashboard () {
   const { isAuthenticated } = useContext(AuthContext)
-  const { fetchData, getRepositories, repos, setUser, orgs, setOrgs, activeOrg, saveAndSetUser, userSettings } = useContext(GithubContext)
+  const { fetchData, getRepositories, repos, setUser, orgs, setOrgs, activeOrg, saveAndSetUser, userSettings, getEvents } = useContext(GithubContext)
   const [isLoading, setLoading] = useState(false)
+  const [events, setEvents] = useState([])
 
   const token = getCookie()
 
@@ -43,14 +44,21 @@ function Dashboard () {
     }
   }, [activeOrg])
 
+  useEffect(() => {
+    if (activeOrg) {
+      getEvents(getCookie()).then(values => setEvents(values))
+    }
+  }, [activeOrg])
+
   return (
     isAuthenticated && (
       <main className='dashboard'>
         <Container>
-          {isLoading &&
+          {isLoading && (
             <div className='loading'>
               <CircularProgress />
-            </div>}
+            </div>
+          )}
 
           <div className='organizations'>
             <Grid container spacing={3}>
@@ -63,19 +71,22 @@ function Dashboard () {
           <div style={{ flexGrow: '1' }}>
             <Grid container spacing={3}>
               <Grid item md={8} xs={12}>
-                {repos && activeOrg ? <Repositories /> : ''}
+                <Activity data={events} />
               </Grid>
               <Grid item md={4} xs={12}>
                 <Notifications />
               </Grid>
-              {activeOrg !== Object.keys(orgs)[0] && (
+              {/* {activeOrg !== Object.keys(orgs)[0] && (
                 <Grid item xs={12}>
                   <OrgSubSettings orgs={Object.keys(orgs)} />
                 </Grid>
-              )}
+              )} */}
             </Grid>
 
             <Grid container spacing={3}>
+              <Grid item md={8} xs={12}>
+                {repos && activeOrg ? <Repositories /> : ''}
+              </Grid>
               <Grid item md={4} xs={12}>
                 <Settings />
               </Grid>
