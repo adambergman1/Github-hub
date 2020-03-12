@@ -97,6 +97,21 @@ const GithubContextProvider = props => {
     })).catch(err => console.log(err))
   }
 
+  const updateUserURL = (url, token) => {
+    const userData = {
+      id: user.id,
+      callbackURL: url
+    }
+
+    window.fetch(serverURL + '/updateUserURL', {
+      headers: { Authorization: 'token ' + token },
+      method: 'POST',
+      body: JSON.stringify(userData)
+    }).then(res => res.json()
+      .then(result => setUserSettings(result)))
+      .catch(err => console.log(err))
+  }
+
   return (
     <GithubContext.Provider value={{
       user,
@@ -112,7 +127,8 @@ const GithubContextProvider = props => {
       saveAndSetUser,
       updateUserSettings,
       userSettings,
-      addHook
+      addHook,
+      updateUserURL
     }}
     >
       {props.children}

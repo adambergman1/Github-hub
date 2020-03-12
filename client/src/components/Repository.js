@@ -48,12 +48,6 @@ const Repository = ({ repo }) => {
     }
   }
 
-  // useEffect(() => {
-  //   if (subscribed.length > 0) {
-  //     updateUserSettings(repo.id, [...subscribed])
-  //   }
-  // }, [subscribed])
-
   return (
     <>
       <ListItem key={repo.id} style={{ borderBottom: '1px solid #eee' }}>

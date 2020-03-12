@@ -68,6 +68,13 @@ functions:
           path: /updateUser
           method: post
           cors: true
+  updateUserURL:
+    handler: lambdas/updateUserURL.handler
+    events:
+      - http:
+          path: /updateUserURL
+          method: post
+          cors: true
   getWebhook:
     handler: lambdas/getNotification.handler
     events:

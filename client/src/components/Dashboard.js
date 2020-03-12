@@ -6,6 +6,7 @@ import OrgSelector from './OrgSelector'
 import Notifications from './Notifications'
 import Repositories from './Repositories'
 import OrgSubSettings from './OrgSubSettings'
+import Settings from './Settings'
 
 import { Container, CircularProgress, Grid } from '@material-ui/core'
 import { indexArray } from '../helpers'
@@ -72,6 +73,12 @@ function Dashboard () {
                   <OrgSubSettings orgs={Object.keys(orgs)} />
                 </Grid>
               )}
+            </Grid>
+
+            <Grid container spacing={3}>
+              <Grid item md={4} xs={12}>
+                <Settings />
+              </Grid>
             </Grid>
           </div>
         </Container>
