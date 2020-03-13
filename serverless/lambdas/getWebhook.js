@@ -78,7 +78,7 @@ function buildMessage (event, body) {
       sender: body.sender.login,
       link: body.issue.url
     }
-    message += `Event: ${data.event}\n Action: ${data.action}\n Title: ${data.title}\n Description: ${data.description}\n Link: ${data.link}\n Repository: ${data.repository}\n Sender: ${data.sender}`
+    message += `Event: ${data.event}\n Action: ${data.action}\n Issue: ${data.issue}\n Description: ${data.description}\n Link: ${data.link}\n Repository: ${data.repository}\n Sender: ${data.sender}`
   } else if (event === 'push') {
     data = {
       event,
