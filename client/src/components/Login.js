@@ -29,7 +29,10 @@ const Login = () => {
     !isAuthenticated && (
       <Paper className='login-area'>
         <h1>GitHub-Hub</h1>
-        <Typography style={{ marginBottom: '1em' }}>For a better overview of your many repositories spread out along different organizations on Github</Typography>
+        <Typography style={{ marginBottom: '1em' }}>
+          For a better overview of your many repositories spread out along
+          different organizations on Github
+        </Typography>
         <div className=''>
           <GitHubIcon className='github-icon' />
         </div>

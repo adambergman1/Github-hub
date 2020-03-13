@@ -10,3 +10,4 @@ const indexArray = (key, array, property) => {
 }
 
 module.exports = { indexArray }
+

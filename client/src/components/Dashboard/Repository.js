@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { ListItem, ListItemAvatar, Avatar, ListItemText, ListItemSecondaryAction, Switch, Collapse, List } from '@material-ui/core'
-import { GithubContext } from '../context/GithubContext'
+import { GithubContext } from '../../context/GithubContext'
+import { getCookie } from '../../helpers/cookies'
 
 const Repository = ({ repo }) => {
   const [open, setOpen] = useState(false)
@@ -23,7 +24,7 @@ const Repository = ({ repo }) => {
     if (open === false) {
       setOpen(true)
       setSubscribed(values)
-      // addHook(getCookie(), repo.hooks_url)
+      addHook(getCookie(), repo.hooks_url)
       updateUserSettings(repo.id, values)
     } else {
       setOpen(false)

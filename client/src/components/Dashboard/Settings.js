@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { GithubContext } from '../context/GithubContext'
+import { GithubContext } from '../../context/GithubContext'
 
 import { Paper, List, ListSubheader, Input, ListItem, ListItemText, Button, Box, FormControl } from '@material-ui/core'
 

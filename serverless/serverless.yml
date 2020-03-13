@@ -55,28 +55,28 @@ functions:
           method: get
           cors: true
   user:
-    handler: lambdas/user.handler
+    handler: lambdas/user/saveUser.handler
     events:
       - http:
           path: /user
           method: post
           cors: true
   updateUser:
-    handler: lambdas/updateUser.handler
+    handler: lambdas/user/updateUserRepos.handler
     events:
       - http:
           path: /updateUser
           method: post
           cors: true
   updateUserURL:
-    handler: lambdas/updateUserURL.handler
+    handler: lambdas/user/updateUserURL.handler
     events:
       - http:
           path: /updateUserURL
           method: post
           cors: true
   getWebhook:
-    handler: lambdas/getNotification.handler
+    handler: lambdas/getWebhook.handler
     events:
       - http:
           path: /webhook
@@ -97,11 +97,6 @@ functions:
     events:
       - websocket:
           route: $default
-  websocket-events:
-    handler: lambdas/websockets/message.handler
-    events:
-      - websocket:
-          route: message
 
 resources:
   Resources:

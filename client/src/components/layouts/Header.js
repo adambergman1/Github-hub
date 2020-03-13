@@ -6,19 +6,22 @@ import { AuthContext } from '../../context/AuthContext'
 import { GithubContext } from '../../context/GithubContext'
 import { WebSocketContext } from '../../context/WebSocketContext'
 
-const Header = props => {
+const Header = () => {
   const { isAuthenticated, setAuthenticated } = useContext(AuthContext)
-  const { user, setUser } = useContext(GithubContext)
+  const { user, setUser, setRepos, setOrgs, setActiveOrg } = useContext(GithubContext)
   const { socket } = useContext(WebSocketContext)
 
   const handleLogout = () => {
+    document.cookie = 'token=; Max-Age=0'
     setAuthenticated(false)
     setUser('')
+    setRepos({})
+    setOrgs({})
+    setActiveOrg('')
+
     if (socket) {
       socket.close()
     }
-
-    document.cookie = 'token=; Max-Age=0'
   }
 
   return (

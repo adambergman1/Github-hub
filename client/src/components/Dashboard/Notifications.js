@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
-import { GithubContext } from '../context/GithubContext'
+import { GithubContext } from '../../context/GithubContext'
 
 import { Paper, List, ListSubheader, ListItem } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import LaunchIcon from '@material-ui/icons/Launch'
-import { WebSocketContext } from '../context/WebSocketContext'
+import { WebSocketContext } from '../../context/WebSocketContext'
 
 const Notifications = () => {
   const [fullHeight, setFullHeight] = useState(false)
@@ -29,6 +29,7 @@ const Notifications = () => {
     if (
       notifications.length === 0 &&
       userSettings &&
+      userSettings.notifications &&
       userSettings.notifications.length
     ) {
       setNotifications(userSettings.notifications)
@@ -51,10 +52,6 @@ const Notifications = () => {
     }
   }, [user])
 
-  useEffect(() => {
-    console.log(notifications)
-  }, [notifications])
-
   return (
     <div className='notifications-feed'>
       <Paper>
@@ -65,7 +62,7 @@ const Notifications = () => {
               className='flex align-center space-between'
               style={{ background: '#eee' }}
             >
-              Activity feed based on your subscriptions
+              Events based on your subscriptions
               {!fullHeight ? (
                 <ExpandMoreIcon
                   className='toggle-button'
@@ -94,7 +91,7 @@ const Notifications = () => {
                       .map((item, i) =>
                         item === 'link' ? (
                           <a
-                            className='flex'
+                            className='inline-flex'
                             key={i}
                             href={n[item]}
                             target='_blank'

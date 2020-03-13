@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Login from './components/Login'
-import Dashboard from './components/Dashboard'
+import Dashboard from './components/Dashboard/Dashboard'
 import Header from './components/layouts/Header'
 import Footer from './components/layouts/Footer'
 

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import Repository from './Repository'
-import { GithubContext } from '../context/GithubContext'
+import { GithubContext } from '../../context/GithubContext'
 
 import { List, ListSubheader, ListItem, ListItemText, TablePagination, Paper, IconButton, CircularProgress } from '@material-ui/core'
 import FirstPageIcon from '@material-ui/icons/FirstPage'

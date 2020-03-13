@@ -27,7 +27,6 @@ exports.handler = async event => {
     headers: {
       'Access-Control-Allow-Credentials': true,
       'Access-Control-Allow-Origin': '*',
-      'Set-Cookie': `token=${token}; Max-Age=3600; HttpOnly; Secure;`,
       Location: `${process.env.CLIENT_URL}/?access_token=${token}`
     }
   }

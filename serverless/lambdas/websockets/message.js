@@ -1,29 +1,23 @@
-const Responses = require('../common/API_Responses')
-const Dynamo = require('../common/Dynamo')
+const AWS = require('aws-sdk')
 
-const tableName = process.env.WSS_TABLE_NAME
+const create = () => {
+  return new AWS.ApiGatewayManagementApi({
+    apiVersion: '2018-11-29',
+    endpoint: 'uw9jdvyktk.execute-api.us-east-1.amazonaws.com/dev'
+  })
+}
 
-exports.handler = async event => {
-  console.log('event', event)
+const send = (connectionID, message) => {
+  const ws = create()
 
-  const { connectionId: connectionID } = event.requestContext
-
-  const { message } = JSON.parse(event.body)
-
-  try {
-    const record = await Dynamo.get(connectionID, tableName)
-    const messages = record.messages
-
-    messages.push(message)
-
-    const data = {
-      ...record,
-      messages
-    }
-
-    await Dynamo.write(data, tableName)
-    return Responses._200({ message: 'Got a message' })
-  } catch (error) {
-    return Responses._400({ message: 'Message could not be received' })
+  const postParams = {
+    Data: JSON.stringify(message),
+    ConnectionId: connectionID
   }
+
+  return ws.postToConnection(postParams).promise()
+}
+
+module.exports = {
+  send
 }

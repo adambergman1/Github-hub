@@ -9,7 +9,7 @@ const GithubContextProvider = props => {
   const [repos, setRepos] = useState({})
   const [userSettings, setUserSettings] = useState()
 
-  const githubURL = 'https://api.github.com/'
+  const githubURL = 'https://api.github.com'
   const serverURL = 'https://sls-github.adambergman.me'
 
   const fetchData = (url, token) => {
@@ -28,7 +28,7 @@ const GithubContextProvider = props => {
     if (repos) {
       if (!reposAlreadyFetched) {
         if (user.login === org.login) {
-          url = `${githubURL}user/repos?page=${page}&per_page=${perPage}`
+          url = `${githubURL}/user/repos?page=${page}&per_page=${perPage}`
         } else {
           url = `${org.repos_url}?page=${page}&per_page=${perPage}`
         }
@@ -36,7 +36,6 @@ const GithubContextProvider = props => {
           .then((rs) => {
             const adminRepos = rs.filter(r => r.permissions.admin === true)
             setRepos({ ...repos, [org.login]: adminRepos })
-            // setRepos({ ...repos, [org.login]: rs })
           })
       }
     }
@@ -115,7 +114,7 @@ const GithubContextProvider = props => {
   const getEvents = (token) => {
     const path = activeOrg === user.login ? 'users' : 'orgs'
 
-    return fetchData(`${githubURL}${path}/${activeOrg}/events?page=1&per_page=1000`, token)
+    return fetchData(`${githubURL}/${path}/${activeOrg}/events?page=1&per_page=1000`, token)
       .then(events => {
         const push = events.filter(e => e.type === 'PushEvent').length
         const issues = events.filter(e => e.type === 'IssueCommentEvent').length

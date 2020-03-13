@@ -1,16 +1,16 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { AuthContext } from '../context/AuthContext'
-import { GithubContext } from '../context/GithubContext'
+import { AuthContext } from '../../context/AuthContext'
+import { GithubContext } from '../../context/GithubContext'
 
 import OrgSelector from './OrgSelector'
+import Activity from './Activity'
 import Notifications from './Notifications'
 import Repositories from './Repositories'
 import Settings from './Settings'
 
 import { Container, CircularProgress, Grid } from '@material-ui/core'
-import { indexArray } from '../helpers'
-import { getCookie } from '../helpers/cookies'
-import Activity from './Activity'
+import { getCookie } from '../../helpers/cookies'
+import { indexArray } from '../../helpers/indexArray'
 
 function Dashboard () {
   const { isAuthenticated } = useContext(AuthContext)
@@ -76,11 +76,6 @@ function Dashboard () {
               <Grid item md={4} xs={12}>
                 <Notifications />
               </Grid>
-              {/* {activeOrg !== Object.keys(orgs)[0] && (
-                <Grid item xs={12}>
-                  <OrgSubSettings orgs={Object.keys(orgs)} />
-                </Grid>
-              )} */}
             </Grid>
 
             <Grid container spacing={3}>

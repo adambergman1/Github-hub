@@ -35,6 +35,10 @@ svg.github-icon {
   display: flex;
 }
 
+.inline-flex {
+  display: inline-flex
+}
+
 .space-between {
   justify-content: space-between;
 }
@@ -107,6 +111,7 @@ svg.github-icon {
 
 .notifications-feed .notification-item .notification {
   background: #fbfffb;
+  border: 2px dashed #ddd;
 }
 
 .notifications-feed .notification-item .notification a, .notifications-feed .notification-item .notification p {
