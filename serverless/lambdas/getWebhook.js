@@ -1,6 +1,6 @@
 const Responses = require('./common/API_Responses')
 const Dynamo = require('./common/Dynamo')
-const { send } = require('./common/WebSocketMessage')
+const { send } = require('./websockets/message')
 
 const wssTableName = process.env.WSS_TABLE_NAME
 const usersTableName = process.env.USERS_TABLE_NAME

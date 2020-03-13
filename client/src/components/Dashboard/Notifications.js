@@ -1,10 +1,12 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
+import { useSnackbar } from 'notistack'
 import { GithubContext } from '../../context/GithubContext'
 
-import { Paper, List, ListSubheader, ListItem } from '@material-ui/core'
+import { Paper, List, ListSubheader, ListItem, ListItemText, IconButton } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import LaunchIcon from '@material-ui/icons/Launch'
+import DeleteIcon from '@material-ui/icons/Delete'
 import { WebSocketContext } from '../../context/WebSocketContext'
 
 const Notifications = () => {
@@ -13,7 +15,9 @@ const Notifications = () => {
   const ref = useRef(notifications)
 
   const { socket, setSocket } = useContext(WebSocketContext)
-  const { user, userSettings } = useContext(GithubContext)
+  const { user, userSettings, clearUserNotifications } = useContext(GithubContext)
+
+  const { enqueueSnackbar } = useSnackbar()
 
   const changeHeight = () => {
     setFullHeight(!fullHeight)
@@ -33,6 +37,7 @@ const Notifications = () => {
       userSettings.notifications.length
     ) {
       setNotifications(userSettings.notifications)
+      clearUserNotifications()
     }
   }, [userSettings])
 
@@ -48,9 +53,15 @@ const Notifications = () => {
       socket.onmessage = event => {
         const data = JSON.parse(event.data)
         setNotifications([data, ...ref.current])
+        enqueueSnackbar(`New event: ${capitalizeFirstLetter(data.event)}`, { variant: 'info' })
       }
     }
   }, [user])
+
+  const clearNotifications = () => {
+    setNotifications([])
+    enqueueSnackbar('Cleared all notifications', { variant: 'success' })
+  }
 
   return (
     <div className='notifications-feed'>
@@ -63,6 +74,13 @@ const Notifications = () => {
               style={{ background: '#eee' }}
             >
               Events based on your subscriptions
+              {
+                notifications.length > 0 && (
+                  <IconButton onClick={clearNotifications} aria-label='delete'>
+                    <DeleteIcon />
+                  </IconButton>
+                )
+              }
               {!fullHeight ? (
                 <ExpandMoreIcon
                   className='toggle-button'
@@ -78,8 +96,8 @@ const Notifications = () => {
           }
         >
           <ListItem style={{ display: 'block' }}>
-            {notifications.length > 0 &&
-              notifications.map((n, i) => (
+            {notifications.length > 0
+              ? notifications.map((n, i) => (
                 <div className='notification-item' key={i}>
                   <ListItem
                     className='notification'
@@ -111,7 +129,7 @@ const Notifications = () => {
                       )}
                   </ListItem>
                 </div>
-              ))}
+              )) : <ListItemText primary='No events yet' />}
           </ListItem>
         </List>
       </Paper>

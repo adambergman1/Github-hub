@@ -110,8 +110,7 @@ svg.github-icon {
 }
 
 .notifications-feed .notification-item .notification {
-  background: #fbfffb;
-  border: 2px dashed #ddd;
+  background: #edf6f9;
 }
 
 .notifications-feed .notification-item .notification a, .notifications-feed .notification-item .notification p {

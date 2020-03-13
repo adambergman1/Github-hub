@@ -103,7 +103,6 @@ const GithubContextProvider = props => {
     }
 
     window.fetch(serverURL + '/updateUserURL', {
-      headers: { Authorization: 'token ' + token },
       method: 'POST',
       body: JSON.stringify(userData)
     }).then(res => res.json()
@@ -129,6 +128,16 @@ const GithubContextProvider = props => {
       })
   }
 
+  const clearUserNotifications = () => {
+    window.fetch(serverURL + '/deleteUserNotifications', {
+      method: 'DELETE',
+      body: JSON.stringify({ id: user.id })
+    })
+      .then(res => res.json())
+      .then(usr => setUserSettings(usr))
+      .catch(err => console.log(err))
+  }
+
   return (
     <GithubContext.Provider value={{
       user,
@@ -146,7 +155,8 @@ const GithubContextProvider = props => {
       userSettings,
       addHook,
       updateUserURL,
-      getEvents
+      getEvents,
+      clearUserNotifications
     }}
     >
       {props.children}

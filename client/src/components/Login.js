@@ -1,9 +1,10 @@
 import React, { useEffect, useContext } from 'react'
 import queryString from 'query-string'
+
 import { Button, Paper, Typography } from '@material-ui/core'
 import GitHubIcon from '@material-ui/icons/GitHub'
-import { setCookie, getCookie } from '../helpers/cookies'
 
+import { setCookie, getCookie } from '../helpers/cookies'
 import { AuthContext } from '../context/AuthContext'
 
 const clientId = '9e33cf9f01b5b67cb4d6'

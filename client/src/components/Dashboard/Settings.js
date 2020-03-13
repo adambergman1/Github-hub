@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { useSnackbar } from 'notistack'
+
 import { GithubContext } from '../../context/GithubContext'
 
 import { Paper, List, ListSubheader, Input, ListItem, ListItemText, Button, Box, FormControl } from '@material-ui/core'
@@ -6,6 +8,7 @@ import { Paper, List, ListSubheader, Input, ListItem, ListItemText, Button, Box,
 const Settings = () => {
   const [url, setURL] = useState('')
   const { userSettings, updateUserURL } = useContext(GithubContext)
+  const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
     if (userSettings && userSettings.callbackURL) {
@@ -17,6 +20,7 @@ const Settings = () => {
     if (url) {
       const newURL = checkURL(url)
       updateUserURL(newURL)
+      enqueueSnackbar('Successfully updated callback URL', { variant: 'success' })
     }
   }
 
@@ -49,6 +53,7 @@ const Settings = () => {
               <Box display='flex' flexDirection='row' justifyContent='space-between'>
                 <FormControl>
                   <Input
+                    error={url.length < 10}
                     placeholder='Webhook URL'
                     value={url}
                     onChange={handleChange}
@@ -58,7 +63,7 @@ const Settings = () => {
                   />
                 </FormControl>
                 <FormControl>
-                  <Button variant='outlined' onClick={updateURL}>
+                  <Button variant='outlined' onClick={updateURL} disabled={url.length < 10}>
                     {url.length > 1 ? 'Update' : 'Save'}
                   </Button>
                 </FormControl>

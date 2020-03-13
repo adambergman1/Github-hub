@@ -75,6 +75,13 @@ functions:
           path: /updateUserURL
           method: post
           cors: true
+  deleteUserNotifications:
+    handler: lambdas/user/deleteUserNotifications.handler
+    events:
+      - http:
+          path: /deleteUserNotifications
+          method: delete
+          cors: true
   getWebhook:
     handler: lambdas/getWebhook.handler
     events:

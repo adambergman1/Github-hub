@@ -32,18 +32,10 @@ const Header = () => {
 
         {
           isAuthenticated && (
-            <>
-              <IconButton color='inherit' edge='end'>
-                <Badge color='primary' variant='dot'>
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-
-              <IconButton onClick={handleLogout} edge='end' color='inherit'>
-                <InputIcon style={{ marginRight: '5px' }} />
-                <Typography variant='body2' noWrap>{user ? user.login : ''}</Typography>
-              </IconButton>
-            </>
+            <IconButton onClick={handleLogout} edge='end' color='inherit'>
+              <InputIcon style={{ marginRight: '5px' }} />
+              <Typography variant='body2' noWrap>{user ? user.login : ''}</Typography>
+            </IconButton>
           )
         }
 

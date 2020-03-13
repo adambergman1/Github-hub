@@ -3,4 +3,16 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+import { SnackbarProvider } from 'notistack'
+
+ReactDOM.render(
+  <SnackbarProvider
+    anchorOrigin={{
+      vertical: 'top',
+      horizontal: 'right'
+    }}
+  >
+    <App />
+  </SnackbarProvider>,
+  document.getElementById('root')
+)
