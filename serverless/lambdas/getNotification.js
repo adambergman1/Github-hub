@@ -14,8 +14,6 @@ exports.handler = async event => {
 
   const { data: bodyToSend, message } = buildMessage(receivedEvent, body)
 
-  console.log({ message })
-
   if (!bodyToSend) {
     return Responses._200({ message: 'Nothing sent' })
   }
@@ -37,13 +35,14 @@ exports.handler = async event => {
       const connection = connections.find(c => parseInt(c.userId) === user.id)
 
       if (connection) {
-        console.log('Before socket send')
         console.log({ bodyToSend })
         await send(connection.id, bodyToSend)
-        console.log('After socket send')
       } else {
         if (user.callbackURL) {
           try {
+            user.notifications = user.notifications ? [...user.notifications, bodyToSend] : [bodyToSend]
+            await Dynamo.write(user, usersTableName) // Update user
+
             await superagent
               .post(user.callbackURL)
               .send({ message })
@@ -73,11 +72,11 @@ function buildMessage (event, body) {
     data = {
       event,
       action: body.action,
-      title: body.issue.title,
-      description: body.issue.body,
-      link: body.issue.url,
       repository: body.repository.name,
-      sender: body.sender.login
+      issue: body.issue.title,
+      description: body.issue.body,
+      sender: body.sender.login,
+      link: body.issue.url
     }
     message += `Event: ${data.event}\n Action: ${data.action}\n Title: ${data.title}\n Description: ${data.description}\n Link: ${data.link}\n Repository: ${data.repository}\n Sender: ${data.sender}`
   } else if (event === 'push') {

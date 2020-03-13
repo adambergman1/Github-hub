@@ -14,7 +14,10 @@ const Header = props => {
   const handleLogout = () => {
     setAuthenticated(false)
     setUser('')
-    socket.close()
+    if (socket) {
+      socket.close()
+    }
+
     document.cookie = 'token=; Max-Age=0'
   }
 

@@ -100,3 +100,15 @@ svg.github-icon {
   flex-direction: column;
   height: 100vh;
 }
+
+.notifications-feed .notification-item {
+  padding: 10px;
+}
+
+.notifications-feed .notification-item .notification {
+  background: #fbfffb;
+}
+
+.notifications-feed .notification-item .notification a, .notifications-feed .notification-item .notification p {
+  margin: 5px 0;
+}

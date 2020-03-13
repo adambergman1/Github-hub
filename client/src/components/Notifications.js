@@ -1,50 +1,59 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useRef } from 'react'
 import { GithubContext } from '../context/GithubContext'
 
-import { Paper, List, ListSubheader, ListItem, ListItemText } from '@material-ui/core'
+import { Paper, List, ListSubheader, ListItem } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
+import LaunchIcon from '@material-ui/icons/Launch'
 import { WebSocketContext } from '../context/WebSocketContext'
 
 const Notifications = () => {
   const [fullHeight, setFullHeight] = useState(false)
   const [notifications, setNotifications] = useState([])
+  const ref = useRef(notifications)
 
   const { socket, setSocket } = useContext(WebSocketContext)
-  const { user } = useContext(GithubContext)
+  const { user, userSettings } = useContext(GithubContext)
 
   const changeHeight = () => {
     setFullHeight(!fullHeight)
   }
 
-  // useEffect(() => {
-  //   if (user) {
-  //     const socket = new window.WebSocket(`wss://uw9jdvyktk.execute-api.us-east-1.amazonaws.com/dev?userId=${user.id}`)
-  //     setSocket(socket)
+  // Store a reference to notifications
+  useEffect(() => {
+    ref.current = notifications
+  }, [notifications])
 
-  //     socket.addEventListener('open', event => {
-  //       console.log('Socket is open')
-  //     })
+  // Checks if there are notifications stored in the DB
+  useEffect(() => {
+    if (
+      notifications.length === 0 &&
+      userSettings &&
+      userSettings.notifications.length
+    ) {
+      setNotifications(userSettings.notifications)
+    }
+  }, [userSettings])
 
-  //     socket.addEventListener('message', event => {
-  //       const data = JSON.parse(event.data)
-  //       setNotifications([...notifications, data])
-  //     })
-  //   }
-  // }, [user])
+  useEffect(() => {
+    if (user && !socket) {
+      const socket = new window.WebSocket(
+        `wss://uw9jdvyktk.execute-api.us-east-1.amazonaws.com/dev?userId=${user.id}`
+      )
+      setSocket(socket)
+
+      socket.onopen = () => console.log('Socket is open')
+
+      socket.onmessage = event => {
+        const data = JSON.parse(event.data)
+        setNotifications([data, ...ref.current])
+      }
+    }
+  }, [user])
 
   useEffect(() => {
     console.log(notifications)
-    const data = [
-      {
-        event: 'push',
-        repository: 'ab224qr-examination-3',
-        pusher: 'WPUtvecklare',
-        link: 'https://github.com/1dv023/ab224qr-examination-3'
-      }
-    ]
-    setNotifications([...notifications, data])
-  }, [])
+  }, [notifications])
 
   return (
     <div className='notifications-feed'>
@@ -53,26 +62,60 @@ const Notifications = () => {
           className={!fullHeight ? 'small-height' : ''}
           subheader={
             <ListSubheader
-              style={{ background: '#eee' }}
               className='flex align-center space-between'
+              style={{ background: '#eee' }}
             >
               Activity feed based on your subscriptions
-              {!fullHeight
-                ? <ExpandMoreIcon className='toggle-button' onClick={changeHeight} />
-                : <ExpandLessIcon className='toggle-button' onClick={changeHeight} />}
+              {!fullHeight ? (
+                <ExpandMoreIcon
+                  className='toggle-button'
+                  onClick={changeHeight}
+                />
+              ) : (
+                <ExpandLessIcon
+                  className='toggle-button'
+                  onClick={changeHeight}
+                />
+              )}
             </ListSubheader>
           }
         >
-          {
-            notifications.length > 0 && notifications.map(n => (
-              <ListItem key={n}>
-                <ListItemText
-                  primary='Single-line item'
-                  secondary='Secondary text'
-                />
-              </ListItem>
-            ))
-          }
+          <ListItem style={{ display: 'block' }}>
+            {notifications.length > 0 &&
+              notifications.map((n, i) => (
+                <div className='notification-item' key={i}>
+                  <ListItem
+                    className='notification'
+                    style={{ display: 'block' }}
+                    component='div'
+                  >
+                    {Object.keys(n)
+                      .sort()
+                      .map((item, i) =>
+                        item === 'link' ? (
+                          <a
+                            className='flex'
+                            key={i}
+                            href={n[item]}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                          >
+                            {capitalizeFirstLetter(item)}
+                            <LaunchIcon
+                              style={{ marginLeft: '5px' }}
+                              fontSize='small'
+                            />
+                          </a>
+                        ) : (
+                          <p key={i}>
+                            <b>{capitalizeFirstLetter(item)}</b>: {n[item]}
+                          </p>
+                        )
+                      )}
+                  </ListItem>
+                </div>
+              ))}
+          </ListItem>
         </List>
       </Paper>
     </div>
@@ -80,3 +123,7 @@ const Notifications = () => {
 }
 
 export default Notifications
+
+function capitalizeFirstLetter (str) {
+  return str[0].toUpperCase() + str.slice(1)
+}
