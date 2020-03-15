@@ -9,7 +9,7 @@ import Repositories from './Repositories'
 import Settings from './Settings'
 
 import { Container, CircularProgress, Grid } from '@material-ui/core'
-import { getCookie } from '../../helpers/cookies'
+import getCookie from '../../helpers/cookies'
 import { indexArray } from '../../helpers/indexArray'
 
 function Dashboard () {

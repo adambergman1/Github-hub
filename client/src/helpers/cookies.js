@@ -1,11 +1,11 @@
-const setCookie = (value) => {
+export const setCookie = (value) => {
   const date = new Date()
   const hours = 2
   date.setTime(date.getTime() + (hours * 60 * 60 * 1000))
   document.cookie = 'token=' + value + '; expires=' + date.toUTCString()
 }
 
-const getCookie = (value) => {
+export const getCookie = () => {
   const cookie = {}
   document.cookie.split(';').forEach((el) => {
     const [k, v] = el.split('=')
@@ -14,7 +14,4 @@ const getCookie = (value) => {
   return cookie.token
 }
 
-module.exports = {
-  setCookie,
-  getCookie
-}
+export default getCookie

@@ -5,6 +5,7 @@
   "main": "handler.js",
   "dependencies": {
     "axios": "^0.19.2",
+    "node-fetch": "^2.6.0",
     "serverless-finch": "^2.5.2",
     "superagent": "^5.2.1"
   },

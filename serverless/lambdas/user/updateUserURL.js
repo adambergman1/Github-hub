@@ -11,12 +11,7 @@ exports.handler = async event => {
     return Responses._404({ message: 'User not found' })
   }
 
-  const item = {
-    id: user.id,
-    username: user.username,
-    subscribedRepos: user.subscribedRepos,
-    callbackURL: body.callbackURL
-  }
+  const item = { ...user, callbackURL: body.callbackURL }
 
   try {
     await Dynamo.write(item, usersTable)

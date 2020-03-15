@@ -74,26 +74,13 @@ const GithubContextProvider = props => {
   }
 
   const addHook = (token, url) => {
-    const config = {
-      name: 'web',
-      active: true,
-      events: ['release', 'issues', 'push'],
-      config: {
-        url: serverURL + '/webhook',
-        content_type: 'json',
-        insecure_ssl: 0
-      }
-    }
-
-    console.log('Adding hook...', url)
-
-    window.fetch(url, {
+    window.fetch(serverURL + '/addWebhook', {
+      headers: { 'Content-Type': 'application/json' },
       method: 'POST',
-      headers: { Authorization: 'token ' + token },
-      body: JSON.stringify(config)
-    }).then(res => res.json().then(result => {
-      return result
-    })).catch(err => console.log(err))
+      mode: 'cors',
+      body: JSON.stringify({ token, url })
+    }).then(r => r.json()).then(res => console.log(res))
+      .catch(err => console.log(err))
   }
 
   const updateUserURL = (url, token) => {

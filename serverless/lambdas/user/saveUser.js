@@ -15,7 +15,8 @@ exports.handler = async event => {
   const item = {
     id: body.id,
     username: body.username,
-    subscribedRepos: []
+    subscribedRepos: [],
+    notifications: []
   }
 
   try {

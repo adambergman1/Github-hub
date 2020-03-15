@@ -2,14 +2,18 @@ const Responses = require('./common/API_Responses')
 const Dynamo = require('./common/Dynamo')
 const { send } = require('./websockets/message')
 
+const crypto = require('crypto')
+const superagent = require('superagent')
+
 const wssTableName = process.env.WSS_TABLE_NAME
 const usersTableName = process.env.USERS_TABLE_NAME
+const secret = process.env.SECRET_TOKEN
 
 exports.handler = async event => {
-  const superagent = require('superagent')
+  verifySignature(event)
 
-  const receivedEvent = event.headers['X-GitHub-Event']
   const body = JSON.parse(event.body)
+  const receivedEvent = event.headers['X-GitHub-Event']
   const repositoryId = body.repository.id
 
   const { data: bodyToSend, message } = buildMessage(receivedEvent, body)
@@ -56,8 +60,19 @@ exports.handler = async event => {
       }
     }
   }
-
   return Responses._200({ message: 'OK!' })
+}
+
+const verifySignature = event => {
+  const signature = event.headers['x-hub-signature'] || event.headers['X-Hub-Signature']
+
+  const hmac = crypto.createHmac('sha1', secret)
+  hmac.update(event.body, 'binary')
+  const expected = 'sha1=' + hmac.digest('hex')
+
+  if (signature.length !== expected.length || crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) {
+    return Responses._401({ message: 'Mismatched signatures' })
+  }
 }
 
 function capitalizeFirstLetter (str) {
