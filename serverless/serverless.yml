@@ -7,7 +7,6 @@ provider:
   runtime: nodejs12.x
   memorySize: 1024
   region: us-east-1
-  stage: prod
   environment:
     CLIENT_ID: ${ssm:/login/clientId~true}
     CLIENT_SECRET: ${ssm:/login/clientSecret~true}
@@ -15,16 +14,17 @@ provider:
     USERS_TABLE_NAME: ${self:custom.usersTableName}
     WSS_TABLE_NAME: ${self:custom.wssTableName}
     CLIENT_URL: https://github-app.adambergman.me
-    # CLIENT_URL: http://localhost:3000
     SERVER_URL: https://sls-github.adambergman.me
   iamRoleStatements:
     - Effect: Allow
       Action:
-          - dynamodb:GetItem
+          - dynamodb:DescribeTable
+          - dynamodb:Query
           - dynamodb:Scan
+          - dynamodb:GetItem
           - dynamodb:PutItem
           - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:us-east-1:*:*"
+      Resource: 'arn:aws:dynamodb:us-east-1:*:*'
 
 plugins:
   - serverless-finch
