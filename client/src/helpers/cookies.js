@@ -2,7 +2,7 @@ export const setCookie = (value) => {
   const date = new Date()
   const hours = 2
   date.setTime(date.getTime() + (hours * 60 * 60 * 1000))
-  document.cookie = 'token=' + value + '; expires=' + date.toUTCString()
+  document.cookie = 'token=' + value + '; expires=' + date.toUTCString() + '; HttpOnly; Secure'
 }
 
 export const getCookie = () => {
