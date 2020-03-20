@@ -26,7 +26,7 @@ exports.handler = async event => {
     statusCode: 302,
     headers: {
       'Access-Control-Allow-Credentials': true,
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': process.env.CLIENT_URL,
       Location: `${process.env.CLIENT_URL}/?access_token=${token}`
     }
   }
