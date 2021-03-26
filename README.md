@@ -17,6 +17,10 @@ For a better overview of your many repositories spread out along different organ
 * Get live updates on your repo(s) based on your subscription settings
 * Add a custom webhook URL to receive notifications while you are offline
 
+## Demo
+
+![screenshot-github-app adambergman me-2021 03 26-13_31_20](https://user-images.githubusercontent.com/14334381/112631808-a22aee00-8e37-11eb-97d4-3a6d2642ac5b.png)
+
 ## Environment
  
 [**Client**](https://github-app.adambergman.me): Built with React.js, Recharts, Notistack & Material UI.  
