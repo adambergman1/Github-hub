@@ -2,8 +2,6 @@
 
 For a better overview of your many repositories spread out along different organizations on Github
 
-[https://github-app.adambergman.me](https://github-app.adambergman.me)
-
 ## Abilities
 
 * View your repositories or by organization  
@@ -23,8 +21,8 @@ For a better overview of your many repositories spread out along different organ
 
 ## Environment
  
-[**Client**](https://github-app.adambergman.me): Built with React.js, Recharts, Notistack & Material UI.  
-[**Server**](https://sls-github.adambergman.me): Built with JavaScript.
+**Client**: Built with React.js, Recharts, Notistack & Material UI.  
+**Server**: Built with JavaScript.
 
 Deployed on AWS using Serverless Framework.
 
